@@ -51,7 +51,7 @@
     "jstoxml": "^5.0.0",
     "marked": "^12.0.0",
     "prettier": "^3.2.5",
-    "reading-time": "~1.4.0",
+    "reading-time": "~1.5.0",
     "satori": "^0.10.13",
     "satori-html": "^0.3.2",
     "shiki": "^1.2.0",
