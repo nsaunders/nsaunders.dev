@@ -1,0 +1,10 @@
+{
+  "html.validate.styles": false,
+  "eslint.useFlatConfig": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
+  "editor.formatOnSave": true,
+  "rewrap.wrappingColumn": 80,
+  "rewrap.autoWrap.enabled": true
+}
