@@ -1,9 +1,6 @@
-import dns from "dns";
 import fs from "fs/promises";
 import path from "path";
 import url from "url";
-
-dns.setDefaultResultOrder("ipv4first");
 
 const dist = path.resolve(
   url.fileURLToPath(import.meta.url),
@@ -11,6 +8,18 @@ const dist = path.resolve(
   "..",
   "dist",
 );
+
+async function fetchWithRetry(r: number, ...args: Parameters<typeof fetch>) {
+  if (!r) {
+    return await fetch(...args);
+  }
+  try {
+    return await fetch(...args);
+  } catch {
+    await new Promise(resolve => setTimeout(() => resolve(undefined), 500));
+    return await fetchWithRetry(r - 1, ...args);
+  }
+}
 
 async function generate(route: string) {
   const outPath = path.resolve(
@@ -22,7 +31,7 @@ async function generate(route: string) {
       ),
   );
   await fs.mkdir(path.dirname(outPath), { recursive: true });
-  const res = await fetch(`${process.env.HOST}${route}`);
+  const res = await fetchWithRetry(10, `${process.env.HOST}${route}`);
   if (!res.ok) {
     throw new Error(
       `Unexpected ${res.status} response while fetching ${route}`,
