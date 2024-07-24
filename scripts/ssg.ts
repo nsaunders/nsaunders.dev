@@ -1,6 +1,9 @@
+import dns from "dns";
 import fs from "fs/promises";
 import path from "path";
 import url from "url";
+
+dns.setDefaultResultOrder("ipv4first");
 
 const dist = path.resolve(
   url.fileURLToPath(import.meta.url),
@@ -18,7 +21,6 @@ async function generate(route: string) {
         i === length - 1 ? `${x || "index"}.html` : x,
       ),
   );
-  console.log(path.dirname(outPath), { recursive: true });
   await fs.mkdir(path.dirname(outPath), { recursive: true });
   const res = await fetch(`${process.env.HOST}${route}`);
   if (!res.ok) {
@@ -32,7 +34,9 @@ async function generate(route: string) {
 }
 
 (async function main() {
-  await fs.rm(dist, { recursive: true });
+  await new Promise(resolve => setTimeout(() => resolve(undefined), 5000));
+  console.log("Start generating routes.");
+  await fs.rm(dist, { recursive: true, force: true });
   await Promise.all(["/", "/posts", "/about"].map(generate));
   console.log("\nAll routes have been generated successfully!");
   process.exit(0);
