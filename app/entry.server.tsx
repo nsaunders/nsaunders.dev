@@ -12,7 +12,11 @@ import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
+import * as Env from "./data/env.js";
+
 const ABORT_DELAY = 5_000;
+
+Env.validate();
 
 export default function handleRequest(
   request: Request,
