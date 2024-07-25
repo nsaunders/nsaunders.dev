@@ -6,5 +6,7 @@
   },
   "editor.formatOnSave": true,
   "rewrap.wrappingColumn": 80,
-  "rewrap.autoWrap.enabled": true
+  "rewrap.autoWrap.enabled": true,
+  "javascript.preferences.importModuleSpecifier": "shortest",
+  "typescript.preferences.importModuleSpecifier": "shortest"
 }

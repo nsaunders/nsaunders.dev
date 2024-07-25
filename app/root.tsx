@@ -16,6 +16,7 @@ import { black, blue, gray, red } from "~/reusable/colors.js";
 import { Logo } from "~/reusable/logo.js";
 
 import { ClientOnly } from "./reusable/client-only.js";
+import { TextLink } from "./reusable/text-link.js";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -131,28 +132,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               X: "https://x.com/agilecoder",
               RSS: "#",
             }).map(([children, href]) => (
-              <Box
-                key={href}
-                is="a"
-                conditions={{
-                  darkHover: { and: ["hover", "dark"] },
-                  darkActive: { and: ["dark", "active"] },
-                }}
-                href={href}
-                color={blue[70]}
-                hover:color={blue[50]}
-                active:color={red[50]}
-                dark:color={blue[30]}
-                darkHover:color={blue[20]}
-                darkActive:color={red[20]}
-                outlineWidth={0}
-                outlineOffset={4}
-                outlineColor={gray[30]}
-                dark:outlineColor={gray[70]}
-                outlineStyle="solid"
-                focus:outlineWidth={2}>
+              <TextLink key={href} is="a" href={href}>
                 {children}
-              </Box>
+              </TextLink>
             ))}
           </Box>
         </Box>

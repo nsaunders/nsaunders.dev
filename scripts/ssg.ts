@@ -2,6 +2,9 @@ import fs from "fs/promises";
 import path from "path";
 import url from "url";
 
+import * as Posts from "../app/data/posts.js";
+import { init } from "./_init.js";
+
 const dist = path.resolve(
   url.fileURLToPath(import.meta.url),
   "..",
@@ -43,10 +46,17 @@ async function generate(route: string) {
 }
 
 (async function main() {
-  await new Promise(resolve => setTimeout(() => resolve(undefined), 5000));
+  init();
   console.log("Start generating routes.");
   await fs.rm(dist, { recursive: true, force: true });
-  await Promise.all(["/", "/posts", "/about"].map(generate));
+  await Promise.all(
+    [
+      "/",
+      "/posts",
+      "/about",
+      ...(await Posts.list()).map(({ name }) => `/posts/${name}`),
+    ].map(generate),
+  );
   console.log("\nAll routes have been generated successfully!");
   process.exit(0);
 })().catch(error => {
