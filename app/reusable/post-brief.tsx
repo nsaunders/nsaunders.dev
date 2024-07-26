@@ -1,4 +1,3 @@
-import { Link } from "@remix-run/react";
 import readingTime from "reading-time";
 
 import type * as Posts from "~/data/posts.js";
@@ -6,6 +5,7 @@ import type * as Posts from "~/data/posts.js";
 import { Box } from "./box.js";
 import { ClientOnly } from "./client-only.js";
 import { gray } from "./colors.js";
+import { Link } from "./link.js";
 import { TextLink } from "./text-link.js";
 
 export function PostBrief(

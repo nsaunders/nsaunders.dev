@@ -2,7 +2,6 @@ import "@fontsource/montserrat/600.css";
 import "@fontsource-variable/nunito-sans/index.css";
 
 import {
-  Link,
   Links,
   Meta,
   NavLink,
@@ -16,6 +15,7 @@ import { black, blue, gray, red } from "~/reusable/colors.js";
 import { Logo } from "~/reusable/logo.js";
 
 import { ClientOnly } from "./reusable/client-only.js";
+import { Link } from "./reusable/link.js";
 import { TextLink } from "./reusable/text-link.js";
 
 export function Layout({ children }: { children: React.ReactNode }) {
