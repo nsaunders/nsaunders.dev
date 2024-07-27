@@ -4,7 +4,14 @@ import {
   createHooks,
   createStyleProps,
 } from "@embellish/react";
+import type {} from "csstype";
 import type { CSSProperties } from "react";
+
+declare module "react" {
+  interface CSSProperties {
+    "--line-height"?: number;
+  }
+}
 
 const { StyleSheet, hooks } = createHooks([
   "@media (prefers-color-scheme: dark)",
@@ -79,7 +86,7 @@ export const Box = createComponent({
     const style: CSSProperties = {
       boxSizing: "border-box",
       margin: 0,
-      lineHeight: "round(up, 1.5em, 4px)",
+      lineHeight: "round(up, calc(var(--line-height, 1.5) * 1em), 4px)",
     };
 
     if (
@@ -134,14 +141,20 @@ export const Box = createComponent({
     justifyContent: true,
     letterSpacing: true,
     lineHeight: (value: CSSProperties["lineHeight"]) =>
-      ({
-        lineHeight: `round(up, ${value}, 4px)`,
-      }) satisfies CSSProperties,
+      typeof value === "number"
+        ? ({
+            "--line-height": value,
+          } satisfies CSSProperties)
+        : {
+            lineHeight: value,
+          },
     margin: createTRBLShorthand("margin", parseLengths, x => `margin${x}`),
-    marginTop: true,
-    marginRight: true,
+    marginBlock: true,
     marginBottom: true,
+    marginInline: true,
     marginLeft: true,
+    marginRight: true,
+    marginTop: true,
     maxHeight: true,
     maxWidth: true,
     minHeight: true,
@@ -150,6 +163,8 @@ export const Box = createComponent({
     outlineOffset: true,
     outlineStyle: true,
     outlineWidth: true,
+    overflowX: true,
+    overflowY: true,
     padding: createTRBLShorthand("padding", parseLengths, x => `padding${x}`),
     paddingBlock: createStartEndShorthand(
       "paddingBlock",

@@ -1,5 +1,4 @@
-import "@fontsource/montserrat/600.css";
-import "@fontsource-variable/nunito-sans/index.css";
+import "./global.css";
 
 import {
   Links,
@@ -20,7 +19,7 @@ import { TextLink } from "./reusable/text-link.js";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ overflowY: "scroll" }}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -34,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         minHeight="100dvh"
         display="flex"
         flexDirection="column"
-        alignItems="center"
+        alignItems="stretch"
         backgroundColor={gray[10]}
         color={gray[90]}
         dark:backgroundColor={gray[90]}
@@ -101,9 +100,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </Box>
           </Box>
         </Box>
-        <Box flexGrow={1} width="calc(100dvw - 32px)" maxWidth={960}>
-          {children}
-        </Box>
+        <Box flexGrow={1}>{children}</Box>
         <Box
           is="footer"
           fontSize={14}
