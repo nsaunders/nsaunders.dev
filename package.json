@@ -23,6 +23,7 @@
   "devDependencies": {
     "@embellish/react": "^0.6.4",
     "@eslint/js": "^9.3.0",
+    "@fontsource-variable/inconsolata": "^5.0.18",
     "@fontsource-variable/nunito-sans": "^5.0.14",
     "@fontsource/montserrat": "^5.0.18",
     "@remix-run/dev": "^2.10.3",

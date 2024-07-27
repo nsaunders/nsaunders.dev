@@ -9,6 +9,7 @@ import * as Posts from "~/data/posts.js";
 import { Block } from "~/reusable/block.js";
 import { Box } from "~/reusable/box.js";
 import { blue, gray, white } from "~/reusable/colors.js";
+import { monospace } from "~/reusable/fonts.js";
 import { TextLink } from "~/reusable/text-link.js";
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -28,10 +29,17 @@ export async function loader({ params }: LoaderFunctionArgs) {
     html: renderToString(
       <Markdown
         components={{
-          a({ is: _, ...props }) {
+          a({ is: _is, node: _node, ...props }) {
             return <TextLink is="a" {...props} />;
           },
-          code({ children, className, node: _node, ...rest }) {
+          code({
+            children,
+            className,
+            is: _is,
+            node: _node,
+            ref: _ref,
+            ...rest
+          }) {
             const [_, lang] = /language-(\w+)/.exec(className || "") || [];
             return lang && typeof children === "string" ? (
               <Box
@@ -39,6 +47,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
                 borderColor={gray[20]}
                 borderStyle="solid"
                 borderWidth={1}
+                fontFamily={monospace}
                 dark:backgroundColor={gray[91]}
                 dark:borderWidth={0}
                 padding={32}
@@ -55,9 +64,13 @@ export async function loader({ params }: LoaderFunctionArgs) {
                 }}
               />
             ) : (
-              <code {...rest} className={className}>
+              <Box
+                {...rest}
+                is="code"
+                className={className}
+                fontFamily={monospace}>
                 {children}
-              </code>
+              </Box>
             );
           },
           h1({ is: _is, ref: _ref, node: _node, ...props }) {

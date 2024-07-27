@@ -33,6 +33,9 @@ importers:
       '@eslint/js':
         specifier: ^9.3.0
         version: 9.7.0
+      '@fontsource-variable/inconsolata':
+        specifier: ^5.0.18
+        version: 5.0.18
       '@fontsource-variable/nunito-sans':
         specifier: ^5.0.14
         version: 5.0.14
@@ -782,6 +785,9 @@ packages:
   '@fastify/busboy@2.1.1':
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
+
+  '@fontsource-variable/inconsolata@5.0.18':
+    resolution: {integrity: sha512-tnpqD9NOKGJlYvf9/wjy6CNAZUpiNIf5OCdQnUEd5rHMepPx8Jkv4XzWgNuU88npVoDGn7qHnv05lAcyZ7Qpqw==}
 
   '@fontsource-variable/nunito-sans@5.0.14':
     resolution: {integrity: sha512-C+zzqbHcWdCftYzSOMTjppd3c9Qb2/WgOJGFFui2vPDN2Dcrcuv7grzNFKtImQln+fMDt0vVQYol6SdvZAvlxA==}
@@ -4673,6 +4679,8 @@ snapshots:
   '@eslint/js@9.7.0': {}
 
   '@fastify/busboy@2.1.1': {}
+
+  '@fontsource-variable/inconsolata@5.0.18': {}
 
   '@fontsource-variable/nunito-sans@5.0.14': {}
 
