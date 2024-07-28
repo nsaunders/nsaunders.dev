@@ -148,6 +148,7 @@ export const Box = createComponent({
         : {
             lineHeight: value,
           },
+    listStyleType: true,
     margin: createTRBLShorthand("margin", parseLengths, x => `margin${x}`),
     marginBlock: true,
     marginBottom: true,
