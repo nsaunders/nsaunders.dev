@@ -79,6 +79,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Box
                   key={x}
                   is={NavLink}
+                  reloadDocument
                   to={`/${x.toLowerCase()}`}
                   color="inherit"
                   hoverUnselected:color={blue[40]}
