@@ -5,11 +5,16 @@ import {
   createStyleProps,
 } from "@embellish/react";
 import type {} from "csstype";
-import type { CSSProperties } from "react";
+import type { CSSProperties, CSSProperties as CSSPropertiesBase } from "react";
 
 declare module "react" {
   interface CSSProperties {
+    "--box-shadow"?: CSSPropertiesBase["boxShadow"];
+    "--inner-stroke-color"?: CSSPropertiesBase["color"];
+    "--inner-stroke-width"?: number;
     "--line-height"?: number;
+    "--outer-stroke-color"?: CSSPropertiesBase["color"];
+    "--outer-stroke-width"?: number;
   }
 }
 
@@ -84,6 +89,8 @@ export const Box = createComponent({
   defaultIs: "div",
   defaultStyle: is => {
     const style: CSSProperties = {
+      boxShadow:
+        "var(--box-shadow, 0 0), 0 0 0 var(--outer-stroke-width, 0) var(--outer-stroke-color, transparent), inset 0 0 0 var(--inner-stroke-width, 0) var(--inner-stroke-color, transparent)",
       boxSizing: "border-box",
       margin: 0,
       lineHeight: "round(up, calc(var(--line-height, 1.5) * 1em), 4px)",
@@ -125,8 +132,12 @@ export const Box = createComponent({
     alignSelf: true,
     backgroundColor: true,
     borderColor: true,
+    borderRadius: true,
     borderStyle: true,
     borderWidth: true,
+    boxShadow: (value: CSSProperties["boxShadow"]) => ({
+      "--box-shadow": value,
+    }),
     color: true,
     display: true,
     flexBasis: true,
@@ -137,7 +148,14 @@ export const Box = createComponent({
     fontSize: true,
     fontWeight: true,
     gap: true,
+    gridTemplateColumns: true,
     height: true,
+    innerStrokeColor: (value: CSSProperties["color"]) => ({
+      "--inner-stroke-color": value,
+    }),
+    innerStrokeWidth: (value: number) => ({
+      "--inner-stroke-width": `${value}px`,
+    }),
     justifyContent: true,
     letterSpacing: true,
     lineHeight: (value: CSSProperties["lineHeight"]) =>
@@ -160,6 +178,12 @@ export const Box = createComponent({
     maxWidth: true,
     minHeight: true,
     minWidth: true,
+    outerStrokeColor: (value: CSSProperties["color"]) => ({
+      "--outer-stroke-color": value,
+    }),
+    outerStrokeWidth: (value: number) => ({
+      "--outer-stroke-width": `${value}px`,
+    }),
     outlineColor: true,
     outlineOffset: true,
     outlineStyle: true,
