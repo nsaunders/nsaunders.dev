@@ -53,6 +53,7 @@ async function generate(route: string) {
     [
       "/",
       "/posts",
+      "/projects",
       "/about",
       ...(await Posts.list()).map(({ name }) => `/posts/${name}`),
     ].map(generate),
