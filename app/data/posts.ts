@@ -23,7 +23,7 @@ export async function listWithDetails() {
   let postsWithDetails = await Promise.all(
     posts.map(({ name }) => getByName(name)),
   );
-  if (import.meta.env.PROD) {
+  if (process.env.NODE_ENV === "production") {
     const now = new Date();
     postsWithDetails = postsWithDetails.filter(
       ({ published }) => published < now,
