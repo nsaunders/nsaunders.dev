@@ -17,6 +17,12 @@ export function PostBrief(
   const rt = Math.round(readingTime(props.markdown).minutes);
   return (
     <Box display="flex" flexDirection="column" gap={8}>
+      <Box is="h1" fontSize={32} fontWeight="normal" lineHeight={1.25}>
+        <TextLink is={Link} to={`/posts/${props.name}`}>
+          {props.title}
+        </TextLink>
+      </Box>
+      <Box is="p">{props.description}</Box>
       <Box color={gray[60]} dark:color={gray[40]}>
         <ClientOnly>
           {props.published.toLocaleDateString(undefined, { dateStyle: "long" })}
@@ -24,12 +30,6 @@ export function PostBrief(
         {" | "}
         {rt} minute{rt === 1 ? "" : "s"}
       </Box>
-      <Box is="h1" fontSize={32} fontWeight="normal" lineHeight={1.25}>
-        <TextLink is={Link} to={`/posts/${props.name}`}>
-          {props.title}
-        </TextLink>
-      </Box>
-      <Box is="p">{props.description}</Box>
     </Box>
   );
 }
