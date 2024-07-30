@@ -49,11 +49,7 @@ export default function Index() {
                   display="flex"
                   flexDirection="column"
                   gap={16}>
-                  <Box
-                    is="h1"
-                    fontSize={24}
-                    fontWeight="normal"
-                    marginBottom={16}>
+                  <Box is="h1" fontSize={24} fontWeight="normal">
                     Latest post
                   </Box>
                   <Card>
