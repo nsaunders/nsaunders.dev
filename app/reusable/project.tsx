@@ -47,7 +47,7 @@ export function Project({
       display="flex"
       flexDirection="column"
       alignItems="flex-start">
-      <TextLink href={url} style={{ fontSize: "1.25em", fontWeight: 700 }}>
+      <TextLink href={url} style={{ fontSize: 20, fontWeight: 700 }}>
         {name}
       </TextLink>
       <Box is="p" marginTop={8} flexGrow={1}>

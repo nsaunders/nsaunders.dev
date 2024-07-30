@@ -19,6 +19,7 @@ declare module "react" {
 }
 
 const { StyleSheet, hooks } = createHooks([
+  "@container (min-width: 640px)",
   "@media (prefers-color-scheme: dark)",
   "&:active",
   "&:focus-visible",
@@ -121,6 +122,7 @@ export const Box = createComponent({
   conditions: createConditions(hooks, {
     active: "&:active",
     activeUnselected: { and: ["&:active", { not: "&.active" }] },
+    containerLarge: "@container (min-width: 640px)",
     dark: "@media (prefers-color-scheme: dark)",
     focus: "&:focus-visible",
     hover: "&:hover",
@@ -139,6 +141,7 @@ export const Box = createComponent({
       "--box-shadow": value,
     }),
     color: true,
+    containerType: true,
     display: true,
     flexBasis: true,
     flexDirection: true,

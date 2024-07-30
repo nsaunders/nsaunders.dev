@@ -13,12 +13,15 @@ export function loader() {
 export default function Page() {
   const projects = useLoaderData<typeof loader>();
   return (
-    <main>
+    <Box marginBlock={32}>
       <Block>
-        <h1>Projects</h1>
+        <Box is="h1" fontSize={24} fontWeight="normal">
+          Projects
+        </Box>
         <Box
           is="ul"
           listStyleType="none"
+          marginTop={16}
           padding={0}
           display="grid"
           gridTemplateColumns="repeat(2, 1fr)"
@@ -35,6 +38,6 @@ export default function Page() {
           ))}
         </Box>
       </Block>
-    </main>
+    </Box>
   );
 }
