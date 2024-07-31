@@ -42,8 +42,10 @@ async function generate(route: string) {
       `Unexpected ${res.status} response while fetching ${route}`,
     );
   }
-  const content = await res.blob();
-  await fs.writeFile(outPath, content);
+  if (!res.body) {
+    throw new Error(`No response body for route ${route}`);
+  }
+  await fs.writeFile(outPath, res.body);
   console.log(`✅ Successfully rendered route ${route}.`);
 }
 
