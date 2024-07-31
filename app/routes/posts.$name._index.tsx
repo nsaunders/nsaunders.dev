@@ -46,6 +46,21 @@ export async function loader({ params }: LoaderFunctionArgs) {
           a({ is: _is, node: _node, ...props }) {
             return <TextLink is="a" {...props} />;
           },
+          blockquote({ is: _is, node: _node, ref: _ref, ...props }) {
+            return (
+              <Box
+                is="blockquote"
+                {...props}
+                paddingBlock={8}
+                paddingInline={32}
+                borderColor={gray[30]}
+                dark:borderColor={gray[70]}
+                borderStyle="solid"
+                borderWidth={0}
+                borderInlineStartWidth={4}
+              />
+            );
+          },
           code({
             children,
             className,
@@ -159,11 +174,13 @@ export async function loader({ params }: LoaderFunctionArgs) {
               />
             );
           },
-          img({ src, alt, ...props }) {
+          img({ alt, is: _is, node: _node, ref: _ref, src, ...props }) {
             return (
-              <img
+              <Box
+                is="img"
                 src={resolveURL(`/posts/${post.name}/`, src || "")}
                 alt={alt}
+                maxWidth="100%"
                 {...props}
               />
             );

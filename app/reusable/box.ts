@@ -134,6 +134,7 @@ export const Box = createComponent({
     alignSelf: true,
     backgroundColor: true,
     borderColor: true,
+    borderInlineStartWidth: true,
     borderRadius: true,
     borderStyle: true,
     borderWidth: true,
