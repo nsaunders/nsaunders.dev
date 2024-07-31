@@ -15,6 +15,17 @@ import { blue, gray, white } from "~/reusable/colors.js";
 import { monospace } from "~/reusable/fonts.js";
 import { TextLink } from "~/reusable/text-link.js";
 
+function resolveURL(basePath: string, relativeOrAbsoluteURL: string) {
+  const dummyOrigin = "http://dummy";
+
+  try {
+    return new URL(relativeOrAbsoluteURL).href;
+  } catch (e) {
+    const baseURL = new URL(basePath, dummyOrigin);
+    return new URL(relativeOrAbsoluteURL, baseURL).pathname;
+  }
+}
+
 export async function loader({ params }: LoaderFunctionArgs) {
   const post = params.name ? await Posts.getByName(params.name) : undefined;
   if (!post) {
@@ -144,6 +155,15 @@ export async function loader({ params }: LoaderFunctionArgs) {
                 fontWeight="bold"
                 lineHeight="20px"
                 marginBlock={30}
+                {...props}
+              />
+            );
+          },
+          img({ src, alt, ...props }) {
+            return (
+              <img
+                src={resolveURL(`/posts/${post.name}/`, src || "")}
+                alt={alt}
                 {...props}
               />
             );

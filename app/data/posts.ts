@@ -65,3 +65,25 @@ export async function getLatest() {
   const [post] = await listWithDetails();
   return (post as typeof post | undefined) ? post : null;
 }
+
+export function listAssetsByName(name: string) {
+  return go(
+    `https://api.github.com/repos/nsaunders/writing/contents/posts/${name}/assets`,
+  );
+  async function go(url: string): Promise<string[]> {
+    const res = await fetch(url, GH.configureRequest({}));
+    return (
+      await Promise.all(
+        z
+          .array(z.object({ path: z.string(), url: z.string().url() }))
+          .parse(await res.json())
+          .map(async content => {
+            if (/\.[a-z0-9]+$/.test(content.path)) {
+              return [`/${content.path}`];
+            }
+            return await go(content.url);
+          }),
+      )
+    ).flat();
+  }
+}

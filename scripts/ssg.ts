@@ -30,7 +30,9 @@ async function generate(route: string) {
     ...route
       .split("/")
       .map((x, i, { length }) =>
-        i === length - 1 ? `${x || "index"}.html` : x,
+        i === length - 1 && !/\.[a-z0-9]+$/.test(x)
+          ? `${x || "index"}.html`
+          : x,
       ),
   );
   await fs.mkdir(path.dirname(outPath), { recursive: true });
@@ -40,13 +42,16 @@ async function generate(route: string) {
       `Unexpected ${res.status} response while fetching ${route}`,
     );
   }
-  const html = await res.text();
-  await fs.writeFile(outPath, html);
+  const content = await res.blob();
+  await fs.writeFile(outPath, content);
   console.log(`✅ Successfully rendered route ${route}.`);
 }
 
 (async function main() {
   init();
+
+  const posts = await Posts.list();
+
   console.log("Start generating routes.");
   await fs.rm(dist, { recursive: true, force: true });
   await Promise.all(
@@ -55,7 +60,10 @@ async function generate(route: string) {
       "/posts",
       "/projects",
       "/about",
-      ...(await Posts.list()).map(({ name }) => `/posts/${name}`),
+      ...posts.map(({ name }) => `/posts/${name}`),
+      ...(
+        await Promise.all(posts.map(({ name }) => Posts.listAssetsByName(name)))
+      ).flat(),
     ].map(generate),
   );
   console.log("\nAll routes have been generated successfully!");
