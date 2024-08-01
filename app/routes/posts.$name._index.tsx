@@ -5,26 +5,14 @@ import type { ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import Markdown from "react-markdown";
 import readingTime from "reading-time";
-import { createHighlighter } from "shiki";
 
 import * as Posts from "~/data/posts.js";
 import { Block } from "~/reusable/block.js";
 import { Box } from "~/reusable/box.js";
 import { ClientOnly } from "~/reusable/client-only.js";
-import { blue, gray, white } from "~/reusable/colors.js";
-import { monospace } from "~/reusable/fonts.js";
-import { TextLink } from "~/reusable/text-link.js";
-
-function resolveURL(basePath: string, relativeOrAbsoluteURL: string) {
-  const dummyOrigin = "http://dummy";
-
-  try {
-    return new URL(relativeOrAbsoluteURL).href;
-  } catch (e) {
-    const baseURL = new URL(basePath, dummyOrigin);
-    return new URL(relativeOrAbsoluteURL, baseURL).pathname;
-  }
-}
+import { blue, gray } from "~/reusable/colors.js";
+import { highlighter } from "~/reusable/highlighter.js";
+import { markdownComponents } from "~/reusable/markdown-components.js";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const post = params.name ? await Posts.getByName(params.name) : undefined;
@@ -34,163 +22,20 @@ export async function loader({ params }: LoaderFunctionArgs) {
       statusText: "Not Found",
     });
   }
-  const highlighter = await createHighlighter({
-    langs: ["css", "html", "javascript", "json", "jsx", "typescript", "tsx"],
-    themes: ["github-dark", "github-light"],
-  });
+  const highlighterInstance = await highlighter();
   const res = json({
     ...post,
     html: renderToString(
       <Markdown
-        components={{
-          a({ is: _is, node: _node, ...props }) {
-            return <TextLink is="a" {...props} />;
-          },
-          blockquote({ is: _is, node: _node, ref: _ref, ...props }) {
-            return (
-              <Box
-                is="blockquote"
-                {...props}
-                paddingBlock={8}
-                paddingInline={32}
-                borderColor={gray[30]}
-                dark:borderColor={gray[70]}
-                borderStyle="solid"
-                borderWidth={0}
-                borderInlineStartWidth={4}
-              />
-            );
-          },
-          code({
-            children,
-            className,
-            is: _is,
-            node: _node,
-            ref: _ref,
-            ...rest
-          }) {
-            const [_, lang] = /language-(\w+)/.exec(className || "") || [];
-            return lang && typeof children === "string" ? (
-              <Box
-                backgroundColor={white}
-                borderColor={gray[20]}
-                borderStyle="solid"
-                borderWidth={1}
-                fontFamily={monospace}
-                dark:backgroundColor={gray[91]}
-                dark:borderWidth={0}
-                padding={32}
-                overflowX="auto"
-                dangerouslySetInnerHTML={{
-                  __html: highlighter.codeToHtml(children, {
-                    lang,
-                    themes: {
-                      dark: "github-dark",
-                      light: "github-light",
-                    },
-                    defaultColor: false,
-                  }),
-                }}
-              />
-            ) : (
-              <Box
-                {...rest}
-                is="code"
-                className={className}
-                fontFamily={monospace}>
-                {children}
-              </Box>
-            );
-          },
-          h1({ is: _is, ref: _ref, node: _node, ...props }) {
-            return (
-              <Box
-                is="h1"
-                fontSize={36}
-                fontWeight="normal"
-                lineHeight="44px"
-                marginBlock={18}
-                {...props}
-              />
-            );
-          },
-          h2({ is: _is, ref: _ref, node: _node, ...props }) {
-            return (
-              <Box
-                is="h2"
-                fontSize={30}
-                fontWeight="normal"
-                lineHeight="36px"
-                marginBlock={22}
-                {...props}
-              />
-            );
-          },
-          h3({ is: _is, ref: _ref, node: _node, ...props }) {
-            return (
-              <Box
-                is="h3"
-                fontSize={24}
-                fontWeight="normal"
-                lineHeight="32px"
-                marginBlock={24}
-                {...props}
-              />
-            );
-          },
-          h4({ is: _is, ref: _ref, node: _node, ...props }) {
-            return (
-              <Box
-                is="h4"
-                fontSize={20}
-                fontWeight="bold"
-                lineHeight="24px"
-                marginBlock={28}
-                {...props}
-              />
-            );
-          },
-          h5({ is: _is, ref: _ref, node: _node, ...props }) {
-            return (
-              <Box
-                is="h5"
-                fontSize={17}
-                fontWeight="bold"
-                lineHeight="20px"
-                marginBlock={30}
-                {...props}
-              />
-            );
-          },
-          h6({ is: _is, ref: _ref, node: _node, ...props }) {
-            return (
-              <Box
-                is="h6"
-                fontSize={14}
-                fontWeight="bold"
-                lineHeight="20px"
-                marginBlock={30}
-                {...props}
-              />
-            );
-          },
-          img({ alt, is: _is, node: _node, ref: _ref, src, ...props }) {
-            return (
-              <Box
-                is="img"
-                src={resolveURL(`/posts/${post.name}/`, src || "")}
-                alt={alt}
-                maxWidth="100%"
-                {...props}
-              />
-            );
-          },
-        }}>
+        components={markdownComponents({
+          highlighter: highlighterInstance,
+          basePath: `/posts/${post.name}/`,
+        })}>
         {post.markdown}
       </Markdown>,
     ),
   });
-  highlighter.dispose();
+  highlighterInstance.dispose();
   return res;
 }
 
