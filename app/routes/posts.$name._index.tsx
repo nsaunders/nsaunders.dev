@@ -10,9 +10,11 @@ import * as Posts from "~/data/posts.js";
 import { Block } from "~/reusable/block.js";
 import { Box } from "~/reusable/box.js";
 import { ClientOnly } from "~/reusable/client-only.js";
-import { blue, gray } from "~/reusable/colors.js";
+import { blue, gray, red, white } from "~/reusable/colors.js";
 import { highlighter } from "~/reusable/highlighter.js";
+import { Hr } from "~/reusable/hr.js";
 import { markdownComponents } from "~/reusable/markdown-components.js";
+import { TextLink } from "~/reusable/text-link.js";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const post = params.name ? await Posts.getByName(params.name) : undefined;
@@ -120,11 +122,126 @@ export default function Post() {
           </Box>
         </Block>
       </Box>
-      <Box paddingBlock={32}>
-        <Block>
+      <Block>
+        <Box display="flex" flexDirection="column" gap={16} paddingBlock={32}>
           <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        </Block>
-      </Box>
+          <Box display="flex" gap={8} color={gray[50]}>
+            <TextLink href={post.discussionHref}>Discuss this post</TextLink>
+            <span>|</span>
+            <TextLink href={post.editHref}>Suggest an edit</TextLink>
+          </Box>
+        </Box>
+      </Block>
+      <Block>
+        <Hr />
+        <Box height={32} />
+        <Subscribe />
+        <Box height={32} />
+      </Block>
     </main>
+  );
+}
+
+function Subscribe() {
+  return (
+    <Box is="section" display="flex" flexWrap="wrap">
+      <Box
+        flexGrow={1}
+        flexShrink={1}
+        flexBasis="calc((60ch - 100%) * 999)"
+        backgroundColor={gray["05"]}
+        color={gray[80]}
+        padding={48}>
+        <Box is="h1" fontSize={32} fontWeight={700} lineHeight={1.25}>
+          Stay informed
+        </Box>
+        <Box is="p" fontSize={24} lineHeight={1.25} marginBlock={16}>
+          Subscribe to email updates and be the first to know when I post new
+          content.
+        </Box>
+        <Box is="p" lineHeight={1.25} color={gray[60]}>
+          I hate spam as much as you do.
+          <br />
+          Unsubscribe at any time — no hard feelings!
+        </Box>
+      </Box>
+      <Box
+        is="form"
+        backgroundColor={gray[80]}
+        color={white}
+        flexDirection="column"
+        alignItems="stretch"
+        padding={48}
+        gap={32}
+        display="flex"
+        flexGrow={1}
+        flexShrink={1}
+        flexBasis="calc((60ch - 100%) * 999)"
+        method="POST"
+        action="https://dev.us21.list-manage.com/subscribe/post?u=1961e884a06fdad7a53bc160e&id=3f29e7fcdf&f_id=00905ce1f0">
+        {(
+          [
+            ["Email", "email", "EMAIL", true],
+            ["First name", "text", "FNAME", false],
+          ] as const
+        ).map(([label, inputType, name, required]) => (
+          <Box
+            key={label}
+            is="label"
+            display="flex"
+            flexDirection="column"
+            gap={8}>
+            <Box is="label" lineHeight={1}>
+              {label}
+            </Box>
+            <Box
+              is="input"
+              type={inputType}
+              name={name}
+              required={required}
+              backgroundColor={gray["05"]}
+              color={gray[90]}
+              lineHeight={1}
+              padding={8}
+              borderWidth={0}
+              borderRadius={4}
+              outlineWidth={0}
+              outlineStyle="solid"
+              outlineColor={blue[50]}
+              outlineOffset={2}
+              focus:outlineWidth={2}
+            />
+          </Box>
+        ))}
+        <Box aria-hidden="true" position="absolute" left={-5000}>
+          <input
+            data-desc="thwart-bots"
+            type="text"
+            name="b_1961e884a06fdad7a53bc160e_3f29e7fcdf"
+            tabIndex={-1}
+          />
+        </Box>
+        <Box
+          is="button"
+          type="submit"
+          alignSelf="center"
+          lineHeight={1}
+          paddingBlock={8}
+          paddingInline={12}
+          borderWidth={0}
+          borderRadius={4}
+          backgroundColor={blue[50]}
+          color={white}
+          outlineWidth={0}
+          outlineStyle="solid"
+          outlineColor={blue[50]}
+          outlineOffset={2}
+          focus:outlineWidth={2}
+          hover:backgroundColor={blue[40]}
+          active:backgroundColor={red[40]}>
+          Subscribe
+        </Box>
+      </Box>
+    </Box>
   );
 }

@@ -147,6 +147,7 @@ export const Box = createComponent({
     flexBasis: true,
     flexDirection: true,
     flexGrow: true,
+    flexShrink: true,
     flexWrap: true,
     fontFamily: true,
     fontSize: true,
@@ -161,6 +162,7 @@ export const Box = createComponent({
       "--inner-stroke-width": value,
     }),
     justifyContent: true,
+    left: true,
     letterSpacing: true,
     lineHeight: (value: CSSProperties["lineHeight"]) =>
       typeof value === "number"
@@ -173,6 +175,7 @@ export const Box = createComponent({
     listStyleType: true,
     margin: createTRBLShorthand("margin", parseLengths, x => `margin${x}`),
     marginBlock: true,
+    marginBlockStart: true,
     marginBottom: true,
     marginInline: true,
     marginLeft: true,
@@ -205,6 +208,7 @@ export const Box = createComponent({
       parseLengths,
       x => `paddingInline${x}`,
     ),
+    position: true,
     textDecorationColor: true,
     textDecorationLine: true,
     textDecorationThickness: true,
