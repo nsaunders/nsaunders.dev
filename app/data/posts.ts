@@ -54,10 +54,18 @@ export async function getByName(name: string) {
       .object({
         title: z.string(),
         description: z.string(),
-        image: z.string(),
+        image_src: z.string(),
+        image_alt: z.string(),
         published: z.date(),
         tags: z.array(z.string()),
       })
+      .transform(({ image_src, image_alt, ...rest }) => ({
+        ...rest,
+        image: {
+          src: image_src,
+          alt: image_alt,
+        },
+      }))
       .parse(data),
   };
 }

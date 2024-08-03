@@ -27,8 +27,8 @@ export function PostBrief(
         gap="8px 20px">
         <Box
           is="img"
-          src={resolveURL(`/posts/${props.name}/`, props.image)}
-          alt="Photo"
+          src={resolveURL(`/posts/${props.name}/`, props.image.src)}
+          alt={props.image.alt}
           containerLarge:gridRow="span 3"
           width="100%"
           aspectRatio={16 / 9}

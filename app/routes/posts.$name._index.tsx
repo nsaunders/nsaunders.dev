@@ -72,8 +72,8 @@ export default function Post() {
             </Box>
             <Box
               is="img"
-              src={resolveURL(`/posts/${post.name}/`, post.image)}
-              alt="Image"
+              src={resolveURL(`/posts/${post.name}/`, post.image.src)}
+              alt={post.image.alt}
               aspectRatio="16 / 9"
               objectFit="cover"
             />
