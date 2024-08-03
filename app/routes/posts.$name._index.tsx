@@ -1,5 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { ReactNode } from "react";
 import { renderToString } from "react-dom/server";
@@ -43,6 +44,34 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return res;
 }
 
+export const meta: MetaFunction<typeof loader> = ({ data: post }) =>
+  post
+    ? [
+        { title: post.title },
+        { name: "description", content: post.description },
+        {
+          property: "og:image",
+          content: `https://nsaunders.dev/posts/${post.name}/opengraph.png`,
+        },
+        {
+          property: "og:url",
+          content: `https://nsaunders.dev/posts/${post.name}`,
+        },
+        {
+          property: "og:site_name",
+          content: "nsaunders.dev",
+        },
+        {
+          property: "twitter:creator",
+          content: "agilecoder",
+        },
+        {
+          property: "twitter:card",
+          content: "summary_large_image",
+        },
+      ]
+    : [];
+
 function LabelValuePair({ children }: { children?: ReactNode }) {
   return (
     <Box display="flex" gap={4} alignItems="center">
@@ -51,7 +80,7 @@ function LabelValuePair({ children }: { children?: ReactNode }) {
   );
 }
 
-export default function Post() {
+export default function Page() {
   const post = useLoaderData<typeof loader>();
   return (
     <main>

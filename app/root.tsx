@@ -1,5 +1,6 @@
 import "./global.css";
 
+import type { MetaDescriptor } from "@remix-run/node";
 import {
   Links,
   Meta,
@@ -17,12 +18,22 @@ import { ClientOnly } from "./reusable/client-only.js";
 import { Link } from "./reusable/link.js";
 import { TextLink } from "./reusable/text-link.js";
 
+export const meta: MetaDescriptor[] = [
+  { title: "Nick Saunders" },
+  { description: "Nick Saunders' technical profile and blog" },
+];
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" style={{ overflowY: "scroll" }}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon-32.png" sizes="32x32" />
+        <link rel="icon" href="/favicon-128.png" sizes="128x128" />
+        <link rel="icon" href="/favicon-180.png" sizes="180x180" />
+        <link rel="icon" href="/favicon-192.png" sizes="192x192" />
+        <link rel="apple-touch-icon" href="/favicon-180.png" sizes="180x180" />
         <Meta />
         <Links />
         <StyleSheet />

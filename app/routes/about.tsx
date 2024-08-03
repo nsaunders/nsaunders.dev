@@ -1,3 +1,4 @@
+import type { MetaDescriptor } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
@@ -28,6 +29,14 @@ export async function loader() {
   highlighterInstance.dispose();
   return res;
 }
+
+export const meta: MetaDescriptor[] = [
+  { title: "About" },
+  {
+    description:
+      "Overview of my programming journey, technical background, and guiding principles",
+  },
+];
 
 export default function About() {
   const { html } = useLoaderData<typeof loader>();

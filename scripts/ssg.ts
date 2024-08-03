@@ -65,6 +65,7 @@ async function generate(route: string) {
       "/about",
       ...posts.flatMap(({ name, image: { src: image } }) => [
         `/posts/${name}`,
+        `/posts/${name}/opengraph/image.png`,
         ...["160x160", "640x360", "960x540"].map(dim =>
           resolveURL(`/optimized/${dim}/posts/${name}/`, image),
         ),
