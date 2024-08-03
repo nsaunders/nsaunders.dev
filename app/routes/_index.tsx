@@ -1,4 +1,3 @@
-import type { MetaFunction } from "@remix-run/react";
 import { json, useLoaderData } from "@remix-run/react";
 
 import * as Posts from "~/data/posts.js";
@@ -13,16 +12,6 @@ import { Project } from "~/reusable/project.js";
 import { TextLink } from "~/reusable/text-link.js";
 
 import { PostBrief } from "../reusable/post-brief.js";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    {
-      name: "description",
-      content: "Welcome to Remix on Cloudflare!",
-    },
-  ];
-};
 
 export async function loader() {
   return json({
