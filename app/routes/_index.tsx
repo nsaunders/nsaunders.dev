@@ -84,7 +84,7 @@ export default function Index() {
                         <Box
                           is="div"
                           padding={32}
-                          backgroundColor={gray[15]}
+                          backgroundColor={gray[12]}
                           dark:backgroundColor={gray[80]}>
                           <Project {...featuredProject} />
                         </Box>

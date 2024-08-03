@@ -5,22 +5,14 @@ import { Box } from "./box.js";
 import { gray, white } from "./colors.js";
 import { monospace } from "./fonts.js";
 import type { highlighter } from "./highlighter.js";
+import { resolveURL as resolveURLImpl } from "./resolve-url.js";
 import { TextLink } from "./text-link.js";
 
 export const markdownComponents = (options: {
   highlighter: Awaited<ReturnType<typeof highlighter>>;
   basePath: string;
 }): ComponentPropsWithoutRef<typeof Markdown>["components"] => {
-  function resolveURL(relativeOrAbsoluteURL: string) {
-    const dummyOrigin = "http://dummy";
-
-    try {
-      return new URL(relativeOrAbsoluteURL).href;
-    } catch (e) {
-      const baseURL = new URL(options.basePath, dummyOrigin);
-      return new URL(relativeOrAbsoluteURL, baseURL).pathname;
-    }
-  }
+  const resolveURL = (x: string) => resolveURLImpl(options.basePath, x);
 
   return {
     a({ is: _is, node: _node, ...props }) {

@@ -14,6 +14,7 @@ import { blue, gray, red, white } from "~/reusable/colors.js";
 import { highlighter } from "~/reusable/highlighter.js";
 import { Hr } from "~/reusable/hr.js";
 import { markdownComponents } from "~/reusable/markdown-components.js";
+import { resolveURL } from "~/reusable/resolve-url.js";
 import { TextLink } from "~/reusable/text-link.js";
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -59,7 +60,7 @@ export default function Post() {
         dark:backgroundColor={gray[85]}
         paddingBlock={64}>
         <Block>
-          <Box is="hgroup" display="flex" flexDirection="column" gap={16}>
+          <Box is="hgroup" display="flex" flexDirection="column" gap={32}>
             <Box
               is="h1"
               fontSize={40}
@@ -69,6 +70,13 @@ export default function Post() {
               dark:color={blue[20]}>
               {post.title}
             </Box>
+            <Box
+              is="img"
+              src={resolveURL(`/posts/${post.name}/`, post.image)}
+              alt="Image"
+              aspectRatio="16 / 9"
+              objectFit="cover"
+            />
             <Box is="p" fontSize={24}>
               {post.description}
             </Box>
@@ -80,7 +88,7 @@ export default function Post() {
               dark:color={gray[30]}>
               <LabelValuePair>
                 <svg
-                  style={{ width: "1em", height: "1em" }}
+                  style={{ width: 16, height: 16 }}
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -102,8 +110,8 @@ export default function Post() {
               </LabelValuePair>
               <LabelValuePair>
                 <svg
-                  width="1em"
-                  height="1em"
+                  width={16}
+                  height={16}
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

@@ -90,6 +90,11 @@ export const Box = createComponent({
   defaultIs: "div",
   defaultStyle: is => {
     const style: CSSProperties = {
+      "--box-shadow": "initial",
+      "--inner-stroke-color": "transparent",
+      "--inner-stroke-width": 0,
+      "--outer-stroke-color": "transparent",
+      "--outer-stroke-width": 0,
       boxShadow:
         "var(--box-shadow, 0 0), 0 0 0 calc(var(--outer-stroke-width, 0) * 1px) var(--outer-stroke-color, transparent), inset 0 0 0 calc(var(--inner-stroke-width, 0) * 1px) var(--inner-stroke-color, transparent)",
       boxSizing: "border-box",
@@ -132,6 +137,7 @@ export const Box = createComponent({
   styleProps: createStyleProps({
     alignItems: true,
     alignSelf: true,
+    aspectRatio: true,
     backgroundColor: true,
     borderColor: true,
     borderInlineStartWidth: true,
@@ -153,7 +159,9 @@ export const Box = createComponent({
     fontSize: true,
     fontWeight: true,
     gap: true,
+    gridRow: true,
     gridTemplateColumns: true,
+    gridTemplateRows: true,
     height: true,
     innerStrokeColor: (value: CSSProperties["color"]) => ({
       "--inner-stroke-color": value,
@@ -185,6 +193,8 @@ export const Box = createComponent({
     maxWidth: true,
     minHeight: true,
     minWidth: true,
+    objectFit: true,
+    order: true,
     outerStrokeColor: (value: CSSProperties["color"]) => ({
       "--outer-stroke-color": value,
     }),

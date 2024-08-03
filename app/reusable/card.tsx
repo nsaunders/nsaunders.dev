@@ -3,15 +3,20 @@ import type { ReactNode } from "react";
 import { Box } from "./box.js";
 import { gray, white } from "./colors.js";
 
-export function Card({ children }: { children?: ReactNode }) {
+export function Card({
+  children,
+  importance = "primary",
+}: {
+  children?: ReactNode;
+  importance?: "primary" | "secondary";
+}) {
   return (
     <Box
-      backgroundColor={white}
-      borderWidth={1}
-      borderStyle="solid"
-      borderColor={gray[20]}
-      dark:borderWidth={0}
-      dark:backgroundColor={gray[85]}
+      backgroundColor={importance === "primary" ? "#fff" : white}
+      innerStrokeWidth={1}
+      innerStrokeColor={gray[importance === "primary" ? 30 : 20]}
+      dark:innerStrokeWidth={0}
+      dark:backgroundColor={importance === "primary" ? gray[85] : gray[92]}
       padding={32}>
       {children}
     </Box>

@@ -54,6 +54,7 @@ export async function getByName(name: string) {
       .object({
         title: z.string(),
         description: z.string(),
+        image: z.string(),
         published: z.date(),
         tags: z.array(z.string()),
       })

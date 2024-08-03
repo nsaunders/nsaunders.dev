@@ -42,13 +42,15 @@ export default function Page() {
         />
         <Box is="section" display="flex" flexDirection="column" gap={32}>
           <Box is="h1" fontSize={24} fontWeight="normal">
-            Still worth a read
+            Worth a read
           </Box>
           <Box is="ul" listStyleType="none" padding={0} display="contents">
             {posts.map(post => (
-              <Box key={post.name} is="li">
-                <PostBrief {...post} published={new Date(post.published)} />
-              </Box>
+              <Card key={post.name} importance="secondary">
+                <Box is="li">
+                  <PostBrief {...post} published={new Date(post.published)} />
+                </Box>
+              </Card>
             ))}
           </Box>
         </Box>
