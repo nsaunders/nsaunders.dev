@@ -14,8 +14,9 @@ import { blue, gray, red, white } from "~/reusable/colors.js";
 import { highlighter } from "~/reusable/highlighter.js";
 import { Hr } from "~/reusable/hr.js";
 import { markdownComponents } from "~/reusable/markdown-components.js";
-import { resolveURL } from "~/reusable/resolve-url.js";
 import { TextLink } from "~/reusable/text-link.js";
+
+import { resolveURL } from "../data/resolve-url.js";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const post = params.name ? await Posts.getByName(params.name) : undefined;
@@ -72,7 +73,10 @@ export default function Post() {
             </Box>
             <Box
               is="img"
-              src={resolveURL(`/posts/${post.name}/`, post.image.src)}
+              src={resolveURL(
+                `/optimized/960x540/posts/${post.name}/`,
+                post.image.src,
+              )}
               alt={post.image.alt}
               aspectRatio="16 / 9"
               objectFit="cover"

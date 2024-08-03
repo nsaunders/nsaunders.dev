@@ -3,6 +3,7 @@ import path from "path";
 import url from "url";
 
 import * as Posts from "../app/data/posts.js";
+import { resolveURL } from "../app/data/resolve-url.js";
 import { init } from "./_init.js";
 
 const dist = path.resolve(
@@ -52,7 +53,7 @@ async function generate(route: string) {
 (async function main() {
   init();
 
-  const posts = await Posts.list();
+  const posts = await Posts.listWithDetails();
 
   console.log("Start generating routes.");
   await fs.rm(dist, { recursive: true, force: true });
@@ -62,7 +63,12 @@ async function generate(route: string) {
       "/posts",
       "/projects",
       "/about",
-      ...posts.map(({ name }) => `/posts/${name}`),
+      ...posts.flatMap(({ name, image: { src: image } }) => [
+        `/posts/${name}`,
+        ...["160x160", "640x360", "960x540"].map(dim =>
+          resolveURL(`/optimized/${dim}/posts/${name}/`, image),
+        ),
+      ]),
       ...(
         await Promise.all(posts.map(({ name }) => Posts.listAssetsByName(name)))
       ).flat(),

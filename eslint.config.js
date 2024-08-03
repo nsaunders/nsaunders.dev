@@ -14,7 +14,7 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ["**/build/**"],
+    ignores: ["**/build/**", "**/dist/**"],
   },
   {
     rules: {
@@ -26,6 +26,7 @@ export default tseslint.config(
           caughtErrorsIgnorePattern: "^_",
         },
       ],
+      "no-unexpected-multiline": "off", // conflicts with prettier formatting
     },
     languageOptions: {
       globals: {

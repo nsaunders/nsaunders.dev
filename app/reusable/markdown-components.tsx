@@ -5,7 +5,7 @@ import { Box } from "./box.js";
 import { gray, white } from "./colors.js";
 import { monospace } from "./fonts.js";
 import type { highlighter } from "./highlighter.js";
-import { resolveURL as resolveURLImpl } from "./resolve-url.js";
+import { resolveURL as resolveURLImpl } from "../data/resolve-url.js";
 import { TextLink } from "./text-link.js";
 
 export const markdownComponents = (options: {

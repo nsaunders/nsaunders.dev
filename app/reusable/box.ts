@@ -139,6 +139,7 @@ export const Box = createComponent({
     alignSelf: true,
     aspectRatio: true,
     backgroundColor: true,
+    backgroundImage: true,
     borderColor: true,
     borderInlineStartWidth: true,
     borderRadius: true,

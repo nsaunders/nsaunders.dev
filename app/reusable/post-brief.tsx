@@ -2,11 +2,11 @@ import readingTime from "reading-time";
 
 import type * as Posts from "~/data/posts.js";
 
+import { resolveURL } from "../data/resolve-url.js";
 import { Box } from "./box.js";
 import { ClientOnly } from "./client-only.js";
 import { gray } from "./colors.js";
 import { Link } from "./link.js";
-import { resolveURL } from "./resolve-url.js";
 import { TextLink } from "./text-link.js";
 
 export function PostBrief(
@@ -27,13 +27,20 @@ export function PostBrief(
         gap="8px 20px">
         <Box
           is="img"
-          src={resolveURL(`/posts/${props.name}/`, props.image.src)}
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           alt={props.image.alt}
-          containerLarge:gridRow="span 3"
+          backgroundImage={`url(${resolveURL(
+            `/optimized/640x360/posts/${props.name}/`,
+            props.image.src,
+          )})`}
+          containerLarge:backgroundImage={`url(${resolveURL(
+            `/optimized/160x160/posts/${props.name}/`,
+            props.image.src,
+          )})`}
           width="100%"
           aspectRatio={16 / 9}
           containerLarge:aspectRatio={1}
-          objectFit="cover"
+          containerLarge:gridRow="span 3"
           marginBlock={8}
           containerLarge:marginBlock={0}
         />
