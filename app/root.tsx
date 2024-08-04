@@ -1,14 +1,7 @@
 import "./global.css";
 
 import type { MetaDescriptor } from "@remix-run/node";
-import {
-  Links,
-  Meta,
-  NavLink,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "@remix-run/react";
+import { Links, Meta, NavLink, Outlet, Scripts } from "@remix-run/react";
 
 import { Box, StyleSheet } from "~/reusable/box.js";
 import { black, blue, gray, red } from "~/reusable/colors.js";
@@ -147,7 +140,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
             ))}
           </Box>
         </Box>
-        <ScrollRestoration />
         <Scripts />
       </Box>
     </html>

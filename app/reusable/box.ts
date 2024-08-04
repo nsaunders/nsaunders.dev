@@ -25,6 +25,7 @@ const { StyleSheet, hooks } = createHooks([
   "&:focus-visible",
   "&:hover",
   "&.active",
+  ".group:hover &",
 ]);
 
 export { StyleSheet };
@@ -130,6 +131,7 @@ export const Box = createComponent({
     containerLarge: "@container (min-width: 640px)",
     dark: "@media (prefers-color-scheme: dark)",
     focus: "&:focus-visible",
+    groupHover: ".group:hover &",
     hover: "&:hover",
     hoverUnselected: { and: ["&:hover", { not: "&.active" }] },
     selected: "&.active",
@@ -156,6 +158,7 @@ export const Box = createComponent({
     flexGrow: true,
     flexShrink: true,
     flexWrap: true,
+    float: true,
     fontFamily: true,
     fontSize: true,
     fontWeight: true,
@@ -214,16 +217,21 @@ export const Box = createComponent({
       parseLengths,
       x => `paddingBlock${x}`,
     ),
+    paddingBottom: true,
     paddingInline: createStartEndShorthand(
       "paddingInline",
       parseLengths,
       x => `paddingInline${x}`,
     ),
+    paddingLeft: true,
+    paddingRight: true,
+    paddingTop: true,
     position: true,
     textDecorationColor: true,
     textDecorationLine: true,
     textDecorationThickness: true,
     textUnderlineOffset: true,
+    visibility: true,
     width: true,
   }),
 });
