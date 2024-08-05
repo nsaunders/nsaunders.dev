@@ -15,7 +15,8 @@ export function loader() {
 export const meta: MetaDescriptor[] = [
   { title: "Posts" },
   {
-    description:
+    name: "description",
+    content:
       "My thoughts on React, TypeScript, frontend development, and software engineering in general",
   },
 ];

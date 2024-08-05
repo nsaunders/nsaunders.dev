@@ -33,7 +33,8 @@ export async function loader() {
 export const meta: MetaDescriptor[] = [
   { title: "About" },
   {
-    description:
+    name: "description",
+    content:
       "Overview of my programming journey, technical background, and guiding principles",
   },
 ];

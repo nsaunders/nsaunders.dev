@@ -14,7 +14,8 @@ export function loader() {
 export const meta: MetaDescriptor[] = [
   { title: "Projects" },
   {
-    description:
+    name: "description",
+    content:
       "Overview of my programming projects and open-source contributions",
   },
 ];

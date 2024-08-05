@@ -15,7 +15,7 @@ import { Vr } from "./reusable/vr.js";
 
 export const meta: MetaDescriptor[] = [
   { title: "Nick Saunders" },
-  { description: "Nick Saunders' technical profile and blog" },
+  { name: "description", content: "Nick Saunders' technical profile and blog" },
 ];
 
 const themeAttr = "data-theme";
