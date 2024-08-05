@@ -164,6 +164,7 @@ export const Box = createComponent({
     boxShadow: (value: CSSProperties["boxShadow"]) => ({
       "--box-shadow": value,
     }),
+    clip: true,
     color: true,
     containerType: true,
     display: true,

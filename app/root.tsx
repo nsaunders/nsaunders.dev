@@ -9,6 +9,7 @@ import { Logo } from "~/reusable/logo.js";
 
 import { ClientOnly } from "./reusable/client-only.js";
 import { Link } from "./reusable/link.js";
+import { ScreenReaderOnly } from "./reusable/screen-reader-only.js";
 import { TextLink } from "./reusable/text-link.js";
 import { Vr } from "./reusable/vr.js";
 
@@ -25,7 +26,7 @@ const themes = ["auto", "dark", "light"] as const;
 function ThemeSwitcher() {
   return (
     <>
-      <Box display="grid" placeItems="center">
+      <Box display="grid" placeItems="center" is="label">
         <Box
           is="select"
           order={1}
@@ -84,6 +85,7 @@ function ThemeSwitcher() {
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
           </Box>
         </Box>
+        <ScreenReaderOnly>Theme</ScreenReaderOnly>
       </Box>
       <script
         dangerouslySetInnerHTML={{
@@ -164,6 +166,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               focus:outlineWidth={2}
               display="flex">
               <Logo />
+              <ScreenReaderOnly>Home</ScreenReaderOnly>
             </Box>
             <Box display="flex" gap="inherit">
               <Box
