@@ -9,20 +9,18 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  /* [data-theme="auto"] .shiki,
-  [data-theme="auto"] .shiki * { */
-  .shiki,
-  .shiki * {
+  [data-theme="auto"] .shiki,
+  [data-theme="auto"] .shiki * {
     --shiki-is-light: ;
     --shiki-is-dark: initial;
   }
 }
 
-/* [data-theme="dark"] .shiki,
+[data-theme="dark"] .shiki,
 [data-theme="dark"] .shiki * {
   --shiki-is-light: ;
   --shiki-is-dark: initial;
-} */
+}
 
 .shiki,
 .shiki span {

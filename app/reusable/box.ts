@@ -21,11 +21,15 @@ declare module "react" {
 const { StyleSheet, hooks } = createHooks([
   "@container (min-width: 640px)",
   "@media (prefers-color-scheme: dark)",
+  '[data-theme="auto"] &',
+  '[data-theme="dark"] &',
   "&:active",
   "&:focus-visible",
   "&:hover",
   "&.active",
   ".group:hover &",
+  ":hover ~ &",
+  ":active ~ &",
 ]);
 
 export { StyleSheet };
@@ -129,12 +133,21 @@ export const Box = createComponent({
     active: "&:active",
     activeUnselected: { and: ["&:active", { not: "&.active" }] },
     containerLarge: "@container (min-width: 640px)",
-    dark: "@media (prefers-color-scheme: dark)",
+    dark: {
+      or: [
+        {
+          and: ["@media (prefers-color-scheme: dark)", '[data-theme="auto"] &'],
+        },
+        '[data-theme="dark"] &',
+      ],
+    },
     focus: "&:focus-visible",
     groupHover: ".group:hover &",
     hover: "&:hover",
     hoverUnselected: { and: ["&:hover", { not: "&.active" }] },
     selected: "&.active",
+    siblingActive: ":active ~ &",
+    siblingHover: ":hover ~ &",
   }),
   styleProps: createStyleProps({
     alignItems: true,
@@ -163,6 +176,7 @@ export const Box = createComponent({
     fontSize: true,
     fontWeight: true,
     gap: true,
+    gridColumn: true,
     gridRow: true,
     gridTemplateColumns: true,
     gridTemplateRows: true,
@@ -173,6 +187,7 @@ export const Box = createComponent({
     innerStrokeWidth: (value: number) => ({
       "--inner-stroke-width": value,
     }),
+    inset: true,
     justifyContent: true,
     left: true,
     letterSpacing: true,
@@ -226,7 +241,9 @@ export const Box = createComponent({
     paddingLeft: true,
     paddingRight: true,
     paddingTop: true,
+    placeItems: true,
     position: true,
+    stroke: true,
     textDecorationColor: true,
     textDecorationLine: true,
     textDecorationThickness: true,
