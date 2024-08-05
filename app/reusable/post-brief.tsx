@@ -33,6 +33,7 @@ export function PostBrief(
             `/optimized/640x360/posts/${props.name}/`,
             props.image.src,
           )})`}
+          backgroundSize="cover"
           containerLarge:backgroundImage={`url(${resolveURL(
             `/optimized/160x160/posts/${props.name}/`,
             props.image.src,

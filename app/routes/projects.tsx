@@ -27,24 +27,27 @@ export default function Page() {
         <Box is="h1" fontSize={24} fontWeight="normal">
           Projects
         </Box>
-        <Box
-          is="ul"
-          listStyleType="none"
-          marginTop={16}
-          padding={0}
-          display="grid"
-          gridTemplateColumns="repeat(2, 1fr)"
-          gap={32}>
-          {projects.map(project => (
-            <Box
-              is="li"
-              key={`${project.owner}/${project.name}`}
-              display="grid">
-              <Card>
-                <Project {...project} />
-              </Card>
-            </Box>
-          ))}
+        <Box containerType="inline-size">
+          <Box
+            is="ul"
+            listStyleType="none"
+            marginTop={16}
+            padding={0}
+            display="grid"
+            gridTemplateColumns="1fr"
+            containerLarge:gridTemplateColumns="repeat(2, 1fr)"
+            gap={32}>
+            {projects.map(project => (
+              <Box
+                is="li"
+                key={`${project.owner}/${project.name}`}
+                display="grid">
+                <Card>
+                  <Project {...project} />
+                </Card>
+              </Box>
+            ))}
+          </Box>
         </Box>
       </Block>
     </Box>
