@@ -10,6 +10,7 @@ import { Logo } from "~/reusable/logo.js";
 import { ClientOnly } from "./reusable/client-only.js";
 import { Link } from "./reusable/link.js";
 import { TextLink } from "./reusable/text-link.js";
+import { Vr } from "./reusable/vr.js";
 
 export const meta: MetaDescriptor[] = [
   { title: "Nick Saunders" },
@@ -135,6 +136,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         dark:color={gray[10]}>
         <Box
           is="header"
+          data-theme="dark"
           display="flex"
           justifyContent="space-around"
           backgroundColor={black}
@@ -193,6 +195,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     {x}
                   </Box>
                 ))}
+              </Box>
+              <Box width={1} height={24}>
+                <Vr />
               </Box>
               <ThemeSwitcher />
             </Box>
