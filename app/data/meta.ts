@@ -44,23 +44,23 @@ export const createMeta =
         content: "nsaunders.dev",
       },
       {
-        property: "twitter:card",
+        name: "twitter:card",
         content: "summary_large_image",
       },
       {
-        property: "twitter:creator",
+        name: "twitter:creator",
         content: "agilecoder",
       },
       {
-        property: "twitter:title",
+        name: "twitter:title",
         conntent: title,
       },
       {
-        property: "twitter:description",
+        name: "twitter:description",
         content: description,
       },
       {
-        property: "twitter:image",
+        name: "twitter:image",
         content: `https://nsaunders.dev${image}`,
       },
     ];
