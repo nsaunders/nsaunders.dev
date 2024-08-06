@@ -51,7 +51,7 @@ export const meta: MetaFunction<typeof loader> = ({ data: post }) =>
         { title: post.title },
         { name: "description", content: post.description },
         ...og({
-          image: `https://nsaunders.dev/posts/${post.name}/opengraph.png`,
+          image: `/posts/${post.name}/opengraph.png`,
           url: `/posts/${post.name}`,
         }),
       ]
