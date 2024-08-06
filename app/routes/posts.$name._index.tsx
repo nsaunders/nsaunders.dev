@@ -7,6 +7,7 @@ import { renderToString } from "react-dom/server";
 import Markdown from "react-markdown";
 import readingTime from "reading-time";
 
+import { og } from "~/data/og.js";
 import * as Posts from "~/data/posts.js";
 import { Block } from "~/reusable/block.js";
 import { Box } from "~/reusable/box.js";
@@ -49,26 +50,10 @@ export const meta: MetaFunction<typeof loader> = ({ data: post }) =>
     ? [
         { title: post.title },
         { name: "description", content: post.description },
-        {
-          property: "og:image",
-          content: `https://nsaunders.dev/posts/${post.name}/opengraph.png`,
-        },
-        {
-          property: "og:url",
-          content: `https://nsaunders.dev/posts/${post.name}`,
-        },
-        {
-          property: "og:site_name",
-          content: "nsaunders.dev",
-        },
-        {
-          property: "twitter:creator",
-          content: "agilecoder",
-        },
-        {
-          property: "twitter:card",
-          content: "summary_large_image",
-        },
+        ...og({
+          image: `https://nsaunders.dev/posts/${post.name}/opengraph.png`,
+          url: `/posts/${post.name}`,
+        }),
       ]
     : [];
 

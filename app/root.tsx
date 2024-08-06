@@ -7,6 +7,7 @@ import { Box, StyleSheet } from "~/reusable/box.js";
 import { black, blue, gray, red } from "~/reusable/colors.js";
 import { Logo } from "~/reusable/logo.js";
 
+import { og } from "./data/og.js";
 import { ClientOnly } from "./reusable/client-only.js";
 import { Link } from "./reusable/link.js";
 import { ScreenReaderOnly } from "./reusable/screen-reader-only.js";
@@ -16,6 +17,7 @@ import { Vr } from "./reusable/vr.js";
 export const meta: MetaDescriptor[] = [
   { title: "Nick Saunders" },
   { name: "description", content: "Nick Saunders' technical profile and blog" },
+  ...og({ url: "/" }),
 ];
 
 const themeAttr = "data-theme";

@@ -1,6 +1,7 @@
 import type { MetaDescriptor } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
+import { og } from "~/data/og.js";
 import * as Posts from "~/data/posts.js";
 import { Block } from "~/reusable/block.js";
 import { Box } from "~/reusable/box.js";
@@ -19,6 +20,7 @@ export const meta: MetaDescriptor[] = [
     content:
       "My thoughts on React, TypeScript, frontend development, and software engineering in general",
   },
+  ...og({ url: "/posts" }),
 ];
 
 export default function Page() {

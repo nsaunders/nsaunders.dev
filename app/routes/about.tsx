@@ -4,6 +4,7 @@ import { useLoaderData } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
 import Markdown from "react-markdown";
 
+import { og } from "~/data/og.js";
 import * as Pages from "~/data/pages.js";
 import { Block } from "~/reusable/block.js";
 import { Box } from "~/reusable/box.js";
@@ -37,6 +38,7 @@ export const meta: MetaDescriptor[] = [
     content:
       "Overview of my programming journey, technical background, and guiding principles",
   },
+  ...og({ url: "/about" }),
 ];
 
 export default function About() {
