@@ -1,24 +1,22 @@
 import "./global.css";
 
-import type { MetaDescriptor } from "@remix-run/node";
 import { Links, Meta, NavLink, Outlet, Scripts } from "@remix-run/react";
 
 import { Box, StyleSheet } from "~/reusable/box.js";
 import { black, blue, gray, red } from "~/reusable/colors.js";
 import { Logo } from "~/reusable/logo.js";
 
-import { og } from "./data/og.js";
+import { createMeta } from "./data/meta.js";
 import { ClientOnly } from "./reusable/client-only.js";
 import { Link } from "./reusable/link.js";
 import { ScreenReaderOnly } from "./reusable/screen-reader-only.js";
 import { TextLink } from "./reusable/text-link.js";
 import { Vr } from "./reusable/vr.js";
 
-export const meta: MetaDescriptor[] = [
-  { title: "Nick Saunders" },
-  { name: "description", content: "Nick Saunders' technical profile and blog" },
-  ...og({ url: "/" }),
-];
+export const meta = createMeta(() => ({
+  title: "Nick Saunders",
+  description: "Nick Saunders' technical profile and blog",
+}));
 
 const themeAttr = "data-theme";
 const themeKey = "pref.theme";

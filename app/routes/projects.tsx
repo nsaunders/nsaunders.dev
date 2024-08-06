@@ -1,7 +1,6 @@
-import type { MetaDescriptor } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { og } from "~/data/og.js";
+import { createMeta } from "~/data/meta.js";
 import * as Projects from "~/data/projects.js";
 import { Block } from "~/reusable/block.js";
 import { Box } from "~/reusable/box.js";
@@ -12,15 +11,11 @@ export function loader() {
   return Projects.list();
 }
 
-export const meta: MetaDescriptor[] = [
-  { title: "Projects" },
-  {
-    name: "description",
-    content:
-      "Overview of my programming projects and open-source contributions",
-  },
-  ...og({ url: "/projects" }),
-];
+export const meta = createMeta(() => ({
+  title: "Projects",
+  description:
+    "Overview of my programming projects and open-source contributions",
+}));
 
 export default function Page() {
   const projects = useLoaderData<typeof loader>();

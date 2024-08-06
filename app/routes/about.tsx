@@ -1,10 +1,9 @@
-import type { MetaDescriptor } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
 import Markdown from "react-markdown";
 
-import { og } from "~/data/og.js";
+import { createMeta } from "~/data/meta.js";
 import * as Pages from "~/data/pages.js";
 import { Block } from "~/reusable/block.js";
 import { Box } from "~/reusable/box.js";
@@ -31,15 +30,11 @@ export async function loader() {
   return res;
 }
 
-export const meta: MetaDescriptor[] = [
-  { title: "About" },
-  {
-    name: "description",
-    content:
-      "Overview of my programming journey, technical background, and guiding principles",
-  },
-  ...og({ url: "/about" }),
-];
+export const meta = createMeta(() => ({
+  title: "About",
+  description:
+    "Overview of my programming journey, technical background, and guiding principles",
+}));
 
 export default function About() {
   const { html } = useLoaderData<typeof loader>();

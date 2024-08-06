@@ -1,13 +1,12 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import type { MetaFunction } from "@remix-run/react";
 import { useLoaderData } from "@remix-run/react";
 import type { ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import Markdown from "react-markdown";
 import readingTime from "reading-time";
 
-import { og } from "~/data/og.js";
+import { createMeta } from "~/data/meta.js";
 import * as Posts from "~/data/posts.js";
 import { Block } from "~/reusable/block.js";
 import { Box } from "~/reusable/box.js";
@@ -45,17 +44,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return res;
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data: post }) =>
-  post
-    ? [
-        { title: post.title },
-        { name: "description", content: post.description },
-        ...og({
-          image: `/posts/${post.name}/opengraph.png`,
-          url: `/posts/${post.name}`,
-        }),
-      ]
-    : [];
+export const meta = createMeta<typeof loader>(post => ({
+  title: post.title,
+  description: post.description,
+  image: `/posts/${post.name}/opengraph.png`,
+  url: `/posts/${post.name}`,
+}));
 
 function LabelValuePair({ children }: { children?: ReactNode }) {
   return (
