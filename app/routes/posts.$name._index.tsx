@@ -65,8 +65,8 @@ export default function Page() {
     <main>
       <Box
         is="header"
-        backgroundColor={gray[15]}
-        dark:backgroundColor={gray[85]}
+        backgroundColor={gray(15)}
+        dark:backgroundColor={gray(85)}
         paddingBlock={64}>
         <Block>
           <Box is="hgroup" display="flex" flexDirection="column" gap={32}>
@@ -75,8 +75,8 @@ export default function Page() {
               fontSize={40}
               fontWeight="normal"
               lineHeight={1.25}
-              color={blue[80]}
-              dark:color={blue[20]}>
+              color={blue(80)}
+              dark:color={blue(20)}>
               {post.title}
             </Box>
             <Box
@@ -96,8 +96,8 @@ export default function Page() {
               display="flex"
               gap={16}
               alignItems="center"
-              color={gray[70]}
-              dark:color={gray[30]}>
+              color={gray(70)}
+              dark:color={gray(30)}>
               <LabelValuePair>
                 <svg
                   style={{ width: 16, height: 16 }}
@@ -145,7 +145,7 @@ export default function Page() {
       <Block>
         <Box display="flex" flexDirection="column" gap={16} paddingBlock={32}>
           <div dangerouslySetInnerHTML={{ __html: post.html }} />
-          <Box display="flex" gap={8} color={gray[50]}>
+          <Box display="flex" gap={8} color={gray(50)}>
             <TextLink href={post.discussionHref}>Discuss this post</TextLink>
             <span>|</span>
             <TextLink href={post.editHref}>Suggest an edit</TextLink>
@@ -169,8 +169,8 @@ function Subscribe() {
         flexGrow={1}
         flexShrink={1}
         flexBasis="calc((60ch - 100%) * 999)"
-        backgroundColor={gray["05"]}
-        color={gray[80]}
+        backgroundColor={gray(5)}
+        color={gray(80)}
         padding={48}>
         <Box is="h1" fontSize={32} fontWeight={700} lineHeight={1.25}>
           Stay informed
@@ -179,7 +179,7 @@ function Subscribe() {
           Subscribe to email updates and be the first to know when I post new
           content.
         </Box>
-        <Box is="p" lineHeight={1.25} color={gray[60]}>
+        <Box is="p" lineHeight={1.25} color={gray(60)}>
           I hate spam as much as you do.
           <br />
           Unsubscribe at any time — no hard feelings!
@@ -187,7 +187,7 @@ function Subscribe() {
       </Box>
       <Box
         is="form"
-        backgroundColor={gray[80]}
+        backgroundColor={gray(80)}
         color={white}
         flexDirection="column"
         alignItems="stretch"
@@ -211,7 +211,7 @@ function Subscribe() {
             display="flex"
             flexDirection="column"
             gap={8}>
-            <Box is="label" lineHeight={1}>
+            <Box is="span" lineHeight={1}>
               {label}
             </Box>
             <Box
@@ -219,15 +219,15 @@ function Subscribe() {
               type={inputType}
               name={name}
               required={required}
-              backgroundColor={gray["05"]}
-              color={gray[90]}
+              backgroundColor={gray(5)}
+              color={gray(90)}
               lineHeight={1}
               padding={8}
               borderWidth={0}
               borderRadius={4}
               outlineWidth={0}
               outlineStyle="solid"
-              outlineColor={blue[50]}
+              outlineColor={blue(50)}
               outlineOffset={2}
               focus:outlineWidth={2}
             />
@@ -250,15 +250,15 @@ function Subscribe() {
           paddingInline={12}
           borderWidth={0}
           borderRadius={4}
-          backgroundColor={blue[50]}
+          backgroundColor={blue(50)}
           color={white}
           outlineWidth={0}
           outlineStyle="solid"
-          outlineColor={blue[50]}
+          outlineColor={blue(50)}
           outlineOffset={2}
           focus:outlineWidth={2}
-          hover:backgroundColor={blue[40]}
-          active:backgroundColor={red[40]}>
+          hover:backgroundColor={blue(40)}
+          active:backgroundColor={red(40)}>
           Subscribe
         </Box>
       </Box>

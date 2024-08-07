@@ -42,8 +42,8 @@ export default function About() {
     <main>
       <Box
         is="header"
-        backgroundColor={gray[15]}
-        dark:backgroundColor={gray[85]}
+        backgroundColor={gray(15)}
+        dark:backgroundColor={gray(85)}
         paddingBlock={64}>
         <Block>
           <Box
@@ -56,8 +56,8 @@ export default function About() {
               fontSize={40}
               fontWeight="normal"
               lineHeight={1.25}
-              color={blue[80]}
-              dark:color={blue[20]}>
+              color={blue(80)}
+              dark:color={blue(20)}>
               About
             </Box>
             <Box

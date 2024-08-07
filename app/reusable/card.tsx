@@ -14,9 +14,9 @@ export function Card({
     <Box
       backgroundColor={importance === "primary" ? "#fff" : white}
       innerStrokeWidth={1}
-      innerStrokeColor={gray[importance === "primary" ? 30 : 20]}
+      innerStrokeColor={gray(importance === "primary" ? 30 : 20)}
       dark:innerStrokeWidth={0}
-      dark:backgroundColor={importance === "primary" ? gray[85] : gray[91]}
+      dark:backgroundColor={importance === "primary" ? gray(85) : gray(91)}
       padding={32}>
       {children}
     </Box>

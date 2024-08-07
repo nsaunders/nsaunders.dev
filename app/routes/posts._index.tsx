@@ -45,8 +45,8 @@ export default function Page() {
           is="hr"
           height={1}
           borderWidth={0}
-          backgroundColor={gray[20]}
-          dark:backgroundColor={gray[80]}
+          backgroundColor={gray(20)}
+          dark:backgroundColor={gray(80)}
         />
         <Box is="section" display="flex" flexDirection="column" gap={32}>
           <Box is="h1" fontSize={24} fontWeight="normal">

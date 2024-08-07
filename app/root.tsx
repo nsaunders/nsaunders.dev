@@ -39,7 +39,7 @@ function ThemeSwitcher() {
           color="transparent"
           outlineWidth={0}
           focus:outlineWidth={2}
-          outlineColor={gray[70]}
+          outlineColor={gray(70)}
           outlineStyle="solid"
           outlineOffset={4}
           onChange={e => {
@@ -63,7 +63,7 @@ function ThemeSwitcher() {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          siblingHover:stroke={blue[40]}
+          siblingHover:stroke={blue(40)}
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round">
@@ -132,17 +132,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         display="flex"
         flexDirection="column"
         alignItems="stretch"
-        backgroundColor={gray[10]}
-        color={gray[90]}
-        dark:backgroundColor={gray[90]}
-        dark:color={gray[10]}>
+        backgroundColor={gray(10)}
+        color={gray(90)}
+        dark:backgroundColor={gray(90)}
+        dark:color={gray(10)}>
         <Box
           is="header"
           data-theme="dark"
           display="flex"
           justifyContent="space-around"
           backgroundColor={black}
-          color={gray[10]}
+          color={gray(10)}
           alignSelf="stretch">
           <Box
             display="flex"
@@ -157,9 +157,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               is={Link}
               to="/"
               color="inherit"
-              hoverUnselected:color={blue[40]}
-              activeUnselected:color={red[40]}
-              outlineColor={gray[70]}
+              hoverUnselected:color={blue(40)}
+              activeUnselected:color={red(40)}
+              outlineColor={gray(70)}
               outlineStyle="solid"
               outlineWidth={0}
               outlineOffset={4}
@@ -182,16 +182,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     reloadDocument
                     to={`/${x.toLowerCase()}`}
                     color="inherit"
-                    hoverUnselected:color={blue[40]}
-                    activeUnselected:color={red[40]}
+                    hoverUnselected:color={blue(40)}
+                    activeUnselected:color={red(40)}
                     fontSize={14}
                     textDecorationLine="underline"
                     textDecorationThickness={2}
                     textUnderlineOffset={6}
                     textDecorationColor="transparent"
-                    selected:textDecorationColor={blue[40]}
+                    selected:textDecorationColor={blue(40)}
                     outlineStyle="solid"
-                    outlineColor={gray[70]}
+                    outlineColor={gray(70)}
                     outlineWidth={0}
                     outlineOffset={4}
                     focus:outlineWidth={2}>
@@ -210,8 +210,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Box
           is="footer"
           fontSize={14}
-          color={gray[70]}
-          dark:color={gray[30]}
+          color={gray(70)}
+          dark:color={gray(30)}
           width="calc(100dvw - 32px)"
           maxWidth={960}
           margin="0 auto"

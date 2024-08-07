@@ -8,8 +8,8 @@ export function Vr() {
       width={1}
       height="100%"
       borderWidth={0}
-      backgroundColor={gray[20]}
-      dark:backgroundColor={gray[80]}
+      backgroundColor={gray(20)}
+      dark:backgroundColor={gray(80)}
     />
   );
 }

@@ -57,7 +57,7 @@ export function PostBrief(
           </TextLink>
         </Box>
         <Box is="p">{props.description}</Box>
-        <Box color={gray[60]} dark:color={gray[40]}>
+        <Box color={gray(60)} dark:color={gray(40)}>
           <ClientOnly>
             {props.published.toLocaleDateString(undefined, {
               dateStyle: "long",

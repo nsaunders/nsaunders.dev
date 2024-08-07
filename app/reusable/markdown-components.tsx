@@ -84,8 +84,8 @@ export const markdownComponents = (options: {
           {...props}
           paddingBlock={8}
           paddingInline={32}
-          borderColor={gray[30]}
-          dark:borderColor={gray[70]}
+          borderColor={gray(30)}
+          dark:borderColor={gray(70)}
           borderStyle="solid"
           borderWidth={0}
           borderInlineStartWidth={4}
@@ -97,11 +97,11 @@ export const markdownComponents = (options: {
       return lang && typeof children === "string" ? (
         <Box
           backgroundColor={white}
-          borderColor={gray[20]}
+          borderColor={gray(20)}
           borderStyle="solid"
           borderWidth={1}
           fontFamily={monospace}
-          dark:backgroundColor={gray[91]}
+          dark:backgroundColor={gray(91)}
           dark:borderWidth={0}
           padding={32}
           overflowX="auto"

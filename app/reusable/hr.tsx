@@ -7,8 +7,8 @@ export function Hr() {
       is="hr"
       height={1}
       borderWidth={0}
-      backgroundColor={gray[20]}
-      dark:backgroundColor={gray[80]}
+      backgroundColor={gray(20)}
+      dark:backgroundColor={gray(80)}
     />
   );
 }
