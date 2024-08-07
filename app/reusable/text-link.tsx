@@ -3,14 +3,14 @@ import type { ComponentPropsWithoutRef, ElementType } from "react";
 import { Box } from "./box.js";
 import { blue, gray, red } from "./colors.js";
 
-export function TextLink<Is extends ElementType = "a">({
-  is: isProp,
+export function TextLink<As extends ElementType = "a">({
+  as: asProp,
   ...props
-}: { is?: Is } & Omit<ComponentPropsWithoutRef<Is>, "is">) {
-  const is: ElementType = isProp || "a";
+}: { as?: As } & Omit<ComponentPropsWithoutRef<As>, "as">) {
+  const as: ElementType = asProp || "a";
   return (
     <Box
-      is={is}
+      as={as}
       conditions={{
         darkHover: { and: ["hover", "dark"] },
         darkActive: { and: ["dark", "active"] },

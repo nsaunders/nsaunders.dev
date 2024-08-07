@@ -26,9 +26,9 @@ const themes = ["auto", "dark", "light"] as const;
 function ThemeSwitcher() {
   return (
     <>
-      <Box display="grid" placeItems="center" is="label">
+      <Box display="grid" placeItems="center" as="label">
         <Box
-          is="select"
+          as="select"
           order={1}
           gridColumn={1}
           gridRow={1}
@@ -49,13 +49,13 @@ function ThemeSwitcher() {
               ?.setAttribute(themeAttr, e.target.value);
           }}>
           {themes.map(theme => (
-            <Box key={theme} is="option" backgroundColor="#fff" color="#000">
+            <Box key={theme} as="option" backgroundColor="#fff" color="#000">
               {theme}
             </Box>
           ))}
         </Box>
         <Box
-          is="svg"
+          as="svg"
           gridColumn={1}
           gridRow={1}
           width={16}
@@ -68,12 +68,12 @@ function ThemeSwitcher() {
           strokeLinecap="round"
           strokeLinejoin="round">
           <Box
-            is="path"
+            as="path"
             d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
             display="none"
             dark:display="unset"
           />
-          <Box is="g" dark:display="none">
+          <Box as="g" dark:display="none">
             <circle cx="12" cy="12" r="5" />
             <line x1="12" y1="1" x2="12" y2="3" />
             <line x1="12" y1="21" x2="12" y2="23" />
@@ -126,7 +126,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <StyleSheet />
       </head>
       <Box
-        is="body"
+        as="body"
         fontFamily="'Nunito Sans Variable', sans-serif"
         minHeight="100dvh"
         display="flex"
@@ -137,7 +137,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         dark:backgroundColor={gray(90)}
         dark:color={gray(10)}>
         <Box
-          is="header"
+          as="header"
           data-theme="dark"
           display="flex"
           justifyContent="space-around"
@@ -154,7 +154,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             maxWidth={960}
             backgroundColor={black}>
             <Box
-              is={Link}
+              as={Link}
               to="/"
               color="inherit"
               hoverUnselected:color={blue(40)}
@@ -170,7 +170,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </Box>
             <Box display="flex" gap="inherit">
               <Box
-                is="nav"
+                as="nav"
                 fontFamily="'Montserrat', sans-serif"
                 fontWeight={600}
                 letterSpacing="0.08em"
@@ -178,7 +178,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {["Posts", "Projects", "About"].map(x => (
                   <Box
                     key={x}
-                    is={NavLink}
+                    as={NavLink}
                     reloadDocument
                     to={`/${x.toLowerCase()}`}
                     color="inherit"
@@ -208,7 +208,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </Box>
         <Box flexGrow={1}>{children}</Box>
         <Box
-          is="footer"
+          as="footer"
           fontSize={14}
           color={gray(70)}
           dark:color={gray(30)}
@@ -235,7 +235,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               X: "https://x.com/agilecoder",
               RSS: "#",
             }).map(([children, href]) => (
-              <TextLink key={href} is="a" href={href}>
+              <TextLink key={href} as="a" href={href}>
                 {children}
               </TextLink>
             ))}

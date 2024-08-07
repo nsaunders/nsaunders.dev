@@ -64,14 +64,14 @@ export default function Page() {
   return (
     <main>
       <Box
-        is="header"
+        as="header"
         backgroundColor={gray(15)}
         dark:backgroundColor={gray(85)}
         paddingBlock={64}>
         <Block>
-          <Box is="hgroup" display="flex" flexDirection="column" gap={32}>
+          <Box as="hgroup" display="flex" flexDirection="column" gap={32}>
             <Box
-              is="h1"
+              as="h1"
               fontSize={40}
               fontWeight="normal"
               lineHeight={1.25}
@@ -80,7 +80,7 @@ export default function Page() {
               {post.title}
             </Box>
             <Box
-              is="img"
+              as="img"
               src={resolveURL(
                 `/optimized/960x540/posts/${post.name}/`,
                 post.image.src,
@@ -89,7 +89,7 @@ export default function Page() {
               aspectRatio="16 / 9"
               objectFit="cover"
             />
-            <Box is="p" fontSize={24}>
+            <Box as="p" fontSize={24}>
               {post.description}
             </Box>
             <Box
@@ -164,7 +164,7 @@ export default function Page() {
 
 function Subscribe() {
   return (
-    <Box is="section" display="flex" flexWrap="wrap">
+    <Box as="section" display="flex" flexWrap="wrap">
       <Box
         flexGrow={1}
         flexShrink={1}
@@ -172,21 +172,21 @@ function Subscribe() {
         backgroundColor={gray(5)}
         color={gray(80)}
         padding={48}>
-        <Box is="h1" fontSize={32} fontWeight={700} lineHeight={1.25}>
+        <Box as="h1" fontSize={32} fontWeight={700} lineHeight={1.25}>
           Stay informed
         </Box>
-        <Box is="p" fontSize={24} lineHeight={1.25} marginBlock={16}>
+        <Box as="p" fontSize={24} lineHeight={1.25} marginBlock={16}>
           Subscribe to email updates and be the first to know when I post new
           content.
         </Box>
-        <Box is="p" lineHeight={1.25} color={gray(60)}>
+        <Box as="p" lineHeight={1.25} color={gray(60)}>
           I hate spam as much as you do.
           <br />
           Unsubscribe at any time — no hard feelings!
         </Box>
       </Box>
       <Box
-        is="form"
+        as="form"
         backgroundColor={gray(80)}
         color={white}
         flexDirection="column"
@@ -207,15 +207,15 @@ function Subscribe() {
         ).map(([label, inputType, name, required]) => (
           <Box
             key={label}
-            is="label"
+            as="label"
             display="flex"
             flexDirection="column"
             gap={8}>
-            <Box is="span" lineHeight={1}>
+            <Box as="span" lineHeight={1}>
               {label}
             </Box>
             <Box
-              is="input"
+              as="input"
               type={inputType}
               name={name}
               required={required}
@@ -242,7 +242,7 @@ function Subscribe() {
           />
         </Box>
         <Box
-          is="button"
+          as="button"
           type="submit"
           alignSelf="center"
           lineHeight={1}

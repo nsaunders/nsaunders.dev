@@ -50,7 +50,7 @@ export function Project({
       <TextLink href={url} style={{ fontSize: 20, fontWeight: 700 }}>
         {name}
       </TextLink>
-      <Box is="p" marginTop={8} flexGrow={1}>
+      <Box as="p" marginTop={8} flexGrow={1}>
         {description}
       </Box>
       <Box

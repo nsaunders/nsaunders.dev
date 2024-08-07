@@ -22,12 +22,12 @@ export default function Page() {
   return (
     <Box marginBlock={32}>
       <Block>
-        <Box is="h1" fontSize={24} fontWeight="normal">
+        <Box as="h1" fontSize={24} fontWeight="normal">
           Projects
         </Box>
         <Box containerType="inline-size">
           <Box
-            is="ul"
+            as="ul"
             listStyleType="none"
             marginTop={16}
             padding={0}
@@ -37,7 +37,7 @@ export default function Page() {
             gap={32}>
             {projects.map(project => (
               <Box
-                is="li"
+                as="li"
                 key={`${project.owner}/${project.name}`}
                 display="grid">
                 <Card>

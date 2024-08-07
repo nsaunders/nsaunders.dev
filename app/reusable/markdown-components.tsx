@@ -36,7 +36,7 @@ function HeadingContent({
   return (
     <>
       <Box
-        is="a"
+        as="a"
         href={`#${slug}`}
         float="left"
         marginTop="calc((1lh - 20px) / 2)"
@@ -62,7 +62,7 @@ function HeadingContent({
           </svg>
         </Box>
       </Box>
-      <Box is="span">{children}</Box>
+      <Box as="span">{children}</Box>
     </>
   );
 }
@@ -75,12 +75,12 @@ export const markdownComponents = (options: {
 
   return {
     a({ is: _is, node: _node, ...props }) {
-      return <TextLink is="a" {...props} />;
+      return <TextLink as="a" {...props} />;
     },
     blockquote({ is: _is, node: _node, ref: _ref, ...props }) {
       return (
         <Box
-          is="blockquote"
+          as="blockquote"
           {...props}
           paddingBlock={8}
           paddingInline={32}
@@ -117,7 +117,7 @@ export const markdownComponents = (options: {
           }}
         />
       ) : (
-        <Box {...rest} is="code" className={className} fontFamily={monospace}>
+        <Box {...rest} as="code" className={className} fontFamily={monospace}>
           {children}
         </Box>
       );
@@ -126,7 +126,7 @@ export const markdownComponents = (options: {
       const slug = getSlug(getText(children));
       return (
         <Box
-          is="h1"
+          as="h1"
           id={slug}
           className="group"
           fontSize={36}
@@ -142,7 +142,7 @@ export const markdownComponents = (options: {
       const slug = getSlug(getText(children));
       return (
         <Box
-          is="h2"
+          as="h2"
           id={slug}
           className="group"
           fontSize={30}
@@ -158,7 +158,7 @@ export const markdownComponents = (options: {
       const slug = getSlug(getText(children));
       return (
         <Box
-          is="h3"
+          as="h3"
           id={slug}
           className="group"
           fontSize={24}
@@ -174,7 +174,7 @@ export const markdownComponents = (options: {
       const slug = getSlug(getText(children));
       return (
         <Box
-          is="h4"
+          as="h4"
           id={slug}
           className="group"
           fontSize={20}
@@ -190,7 +190,7 @@ export const markdownComponents = (options: {
       const slug = getSlug(getText(children));
       return (
         <Box
-          is="h5"
+          as="h5"
           id={slug}
           className="group"
           fontSize={17}
@@ -206,7 +206,7 @@ export const markdownComponents = (options: {
       const slug = getSlug(getText(children));
       return (
         <Box
-          is="h6"
+          as="h6"
           id={slug}
           className="group"
           fontSize={14}
@@ -221,7 +221,7 @@ export const markdownComponents = (options: {
     img({ alt, is: _is, node: _node, ref: _ref, src, ...props }) {
       return (
         <Box
-          is="img"
+          as="img"
           src={resolveURL(src || "")}
           alt={alt}
           maxWidth="100%"

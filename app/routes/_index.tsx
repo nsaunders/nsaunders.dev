@@ -24,23 +24,23 @@ export default function Index() {
   const { latestPost, featuredProject } = useLoaderData<typeof loader>();
   return (
     <Box
-      is="main"
+      as="main"
       display="flex"
       flexDirection="column"
       gap={32}
       marginBottom={32}>
       <Box
-        is="header"
+        as="header"
         backgroundColor={black}
         color={white}
         paddingTop={32}
         paddingBottom={64}>
         <Block>
-          <Box is="hgroup" display="flex" flexDirection="column" gap={16}>
-            <Box is="h1" fontSize={48} fontWeight="normal">
+          <Box as="hgroup" display="flex" flexDirection="column" gap={16}>
+            <Box as="h1" fontSize={48} fontWeight="normal">
               Hi there, I&apos;m Nick.
             </Box>
-            <Box is="p" fontSize={24}>
+            <Box as="p" fontSize={24}>
               I&apos;m an experienced software engineer focused on React,
               TypeScript, user experience, and design systems. I also dabble in
               functional programming.
@@ -56,7 +56,7 @@ export default function Index() {
                 display="flex"
                 flexDirection="column"
                 gap={16}>
-                <Box is="h1" fontSize={24} fontWeight="normal">
+                <Box as="h1" fontSize={24} fontWeight="normal">
                   Latest post
                 </Box>
                 <Card>
@@ -65,7 +65,7 @@ export default function Index() {
                     published={new Date(latestPost.published)}
                   />
                 </Card>
-                <TextLink is={Link} to="/posts">
+                <TextLink as={Link} to="/posts">
                   View more
                 </TextLink>
               </Box>,
@@ -78,7 +78,7 @@ export default function Index() {
                 display="flex"
                 flexDirection="column"
                 gap={16}>
-                <Box is="h1" fontSize={24} fontWeight="normal">
+                <Box as="h1" fontSize={24} fontWeight="normal">
                   Featured project
                 </Box>
                 <Box containerType="inline-size">
@@ -89,17 +89,17 @@ export default function Index() {
                       containerLarge:gridTemplateColumns="1fr 1fr"
                       gap={32}>
                       <Box
-                        is="div"
+                        as="div"
                         padding={32}
                         backgroundColor={gray(12)}
                         dark:backgroundColor={gray(80)}>
                         <Project {...featuredProject} />
                       </Box>
-                      <Box is="p">{featuredProject.story}</Box>
+                      <Box as="p">{featuredProject.story}</Box>
                     </Box>
                   </Card>
                 </Box>
-                <TextLink is={Link} to="/projects">
+                <TextLink as={Link} to="/projects">
                   View more
                 </TextLink>
               </Box>,

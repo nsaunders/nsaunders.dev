@@ -22,14 +22,14 @@ export default function Page() {
   const [latestPost, ...posts] = useLoaderData<typeof loader>();
   return (
     <Block>
-      <Box is="main" display="flex" flexDirection="column" gap={32}>
+      <Box as="main" display="flex" flexDirection="column" gap={32}>
         <Box
-          is="section"
+          as="section"
           display="flex"
           flexDirection="column"
           gap={16}
           marginTop={32}>
-          <Box is="h1" fontSize={24} fontWeight="normal">
+          <Box as="h1" fontSize={24} fontWeight="normal">
             Latest post
           </Box>
           {latestPost ? (
@@ -42,20 +42,20 @@ export default function Page() {
           ) : undefined}
         </Box>
         <Box
-          is="hr"
+          as="hr"
           height={1}
           borderWidth={0}
           backgroundColor={gray(20)}
           dark:backgroundColor={gray(80)}
         />
-        <Box is="section" display="flex" flexDirection="column" gap={32}>
-          <Box is="h1" fontSize={24} fontWeight="normal">
+        <Box as="section" display="flex" flexDirection="column" gap={32}>
+          <Box as="h1" fontSize={24} fontWeight="normal">
             Worth a read
           </Box>
-          <Box is="ul" listStyleType="none" padding={0} display="contents">
+          <Box as="ul" listStyleType="none" padding={0} display="contents">
             {posts.map(post => (
               <Card key={post.name} importance="secondary">
-                <Box is="li">
+                <Box as="li">
                   <PostBrief {...post} published={new Date(post.published)} />
                 </Box>
               </Card>

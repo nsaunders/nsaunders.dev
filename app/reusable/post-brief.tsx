@@ -26,7 +26,7 @@ export function PostBrief(
         containerLarge:gridTemplateRows="auto auto 1fr"
         gap="8px 20px">
         <Box
-          is="img"
+          as="img"
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
           alt={props.image.alt}
           backgroundImage={`url(${resolveURL(
@@ -46,17 +46,17 @@ export function PostBrief(
           containerLarge:marginBlock={0}
         />
         <Box
-          is="h1"
+          as="h1"
           fontSize={32}
           fontWeight="normal"
           lineHeight={1.25}
           order={-1}
           containerLarge:order="revert-layer">
-          <TextLink is={Link} to={`/posts/${props.name}`}>
+          <TextLink as={Link} to={`/posts/${props.name}`}>
             {props.title}
           </TextLink>
         </Box>
-        <Box is="p">{props.description}</Box>
+        <Box as="p">{props.description}</Box>
         <Box color={gray(60)} dark:color={gray(40)}>
           <ClientOnly>
             {props.published.toLocaleDateString(undefined, {

@@ -92,7 +92,7 @@ function createTRBLShorthand<P extends keyof CSSProperties>(
 
 export const Box = createComponent({
   displayName: "Box",
-  defaultIs: "div",
+  defaultAs: "div",
   defaultStyle: is => {
     const style: CSSProperties = {
       "--box-shadow": "initial",

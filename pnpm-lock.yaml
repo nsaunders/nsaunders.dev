@@ -7,29 +7,10 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@remix-run/node':
-        specifier: ^2.10.3
-        version: 2.10.3(typescript@5.5.4)
-      '@remix-run/react':
-        specifier: ^2.10.3
-        version: 2.10.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4)
-      '@remix-run/serve':
-        specifier: ^2.10.3
-        version: 2.10.3(typescript@5.5.4)
-      isbot:
-        specifier: ^4.1.0
-        version: 4.4.0
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.3.1(react@18.3.1)
     devDependencies:
       '@embellish/react':
-        specifier: ^0.6.4
-        version: 0.6.4(@types/react@18.3.3)(react@18.3.1)
+        specifier: ^0.7.0
+        version: 0.7.0(@types/react@18.3.3)(react@18.3.1)
       '@eslint/js':
         specifier: ^9.3.0
         version: 9.7.0
@@ -45,6 +26,15 @@ importers:
       '@remix-run/dev':
         specifier: ^2.10.3
         version: 2.10.3(@remix-run/react@2.10.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4))(@remix-run/serve@2.10.3(typescript@5.5.4))(@types/node@20.14.12)(typescript@5.5.4)(vite@5.3.4(@types/node@20.14.12))(wrangler@3.66.0)
+      '@remix-run/node':
+        specifier: ^2.10.3
+        version: 2.10.3(typescript@5.5.4)
+      '@remix-run/react':
+        specifier: ^2.10.3
+        version: 2.10.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4)
+      '@remix-run/serve':
+        specifier: ^2.10.3
+        version: 2.10.3(typescript@5.5.4)
       '@types/node':
         specifier: ^20.14.12
         version: 20.14.12
@@ -105,12 +95,21 @@ importers:
       http-server:
         specifier: ^14.1.1
         version: 14.1.1
+      isbot:
+        specifier: ^4.4.0
+        version: 4.4.0
       mime:
         specifier: ^4.0.4
         version: 4.0.4
       prettier:
         specifier: ^3.2.5
         version: 3.3.3
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       react-markdown:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.3.3)(react@18.3.1)
@@ -354,8 +353,8 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@embellish/react@0.6.4':
-    resolution: {integrity: sha512-ATNeUOXUAQX5gk+pU9rwW9C1o5TJZmR5WIzpOS+ezknSOxFdyVzgJwUcedKLEq4WB1Wf4Jfn5CubLlQdPRzuww==}
+  '@embellish/react@0.7.0':
+    resolution: {integrity: sha512-gyYX2h0yPHEzRB19EQbGD0MH5kc0QUunJ21SuxQ/7pbaI20T7LfUZmCZZVjpTe5ESvuM73/V/NE5vJiu8K9Cvg==}
     peerDependencies:
       '@types/react': '>=17 <20'
       react: '>=17 <20'
@@ -4641,7 +4640,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@embellish/react@0.6.4(@types/react@18.3.3)(react@18.3.1)':
+  '@embellish/react@0.7.0(@types/react@18.3.3)(react@18.3.1)':
     dependencies:
       '@types/react': 18.3.3
       react: 18.3.1

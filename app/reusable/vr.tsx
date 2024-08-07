@@ -4,7 +4,7 @@ import { gray } from "./colors.js";
 export function Vr() {
   return (
     <Box
-      is="hr"
+      as="hr"
       width={1}
       height="100%"
       borderWidth={0}

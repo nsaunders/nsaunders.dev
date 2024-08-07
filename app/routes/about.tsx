@@ -41,18 +41,18 @@ export default function About() {
   return (
     <main>
       <Box
-        is="header"
+        as="header"
         backgroundColor={gray(15)}
         dark:backgroundColor={gray(85)}
         paddingBlock={64}>
         <Block>
           <Box
-            is="hgroup"
+            as="hgroup"
             display="flex"
             alignItems="center"
             justifyContent="space-between">
             <Box
-              is="h1"
+              as="h1"
               fontSize={40}
               fontWeight="normal"
               lineHeight={1.25}
@@ -61,7 +61,7 @@ export default function About() {
               About
             </Box>
             <Box
-              is="img"
+              as="img"
               src="https://github.com/nsaunders.png"
               alt="Nick Saunders"
               borderRadius={999}
