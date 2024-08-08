@@ -233,7 +233,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               GitHub: "https://github.com/nsaunders",
               LinkedIn: "https://linkedin.com/in/nicksaunders",
               X: "https://x.com/agilecoder",
-              RSS: "#",
+              RSS: "/rss.xml",
             }).map(([children, href]) => (
               <TextLink key={href} as="a" href={href}>
                 {children}

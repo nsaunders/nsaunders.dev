@@ -60,9 +60,10 @@ async function generate(route: string) {
   await Promise.all(
     [
       "/",
+      "/about",
       "/posts",
       "/projects",
-      "/about",
+      "/rss.xml",
       ...posts.flatMap(({ name, image: { src: image } }) => [
         `/posts/${name}`,
         `/posts/${name}/opengraph.png`,

@@ -35,6 +35,9 @@ importers:
       '@remix-run/serve':
         specifier: ^2.10.3
         version: 2.10.3(typescript@5.5.4)
+      '@types/jstoxml':
+        specifier: ^2.0.4
+        version: 2.0.4
       '@types/node':
         specifier: ^20.14.12
         version: 20.14.12
@@ -98,6 +101,9 @@ importers:
       isbot:
         specifier: ^4.4.0
         version: 4.4.0
+      jstoxml:
+        specifier: ^5.0.2
+        version: 5.0.2
       mime:
         specifier: ^4.0.4
         version: 4.0.4
@@ -1194,6 +1200,9 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  '@types/jstoxml@2.0.4':
+    resolution: {integrity: sha512-XHUMp2t8CfJUsKt8qjlspZWlkVeveFg2eF/kRV8CKiNQ+Fd3mJkfexIDXtZEnG/4aJZRCVNNn46zNddSVIUN0w==}
 
   '@types/mdast@3.0.15':
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -2726,6 +2735,9 @@ packages:
 
   jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
+
+  jstoxml@5.0.2:
+    resolution: {integrity: sha512-p/Uyi1nSlAcOL+FbWCbTLAHtMbk/QlPMAE/wRLek7W8646jWII3GtLEKSBzf97UitieRWj1VZcbZxs8arq2nbg==}
 
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
@@ -5329,6 +5341,8 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
+  '@types/jstoxml@2.0.4': {}
+
   '@types/mdast@3.0.15':
     dependencies:
       '@types/unist': 2.0.10
@@ -7261,6 +7275,8 @@ snapshots:
       universalify: 2.0.1
     optionalDependencies:
       graceful-fs: 4.2.11
+
+  jstoxml@5.0.2: {}
 
   jsx-ast-utils@3.3.5:
     dependencies:
