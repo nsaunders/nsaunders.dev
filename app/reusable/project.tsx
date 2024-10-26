@@ -1,16 +1,17 @@
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
+import { pipe } from "remeda";
 
 import * as Projects from "~/data/projects.js";
 
-import { Box } from "./box.js";
+import { darkMode, on } from "./css.js";
 import { TextLink } from "./text-link.js";
 
 function Detail({ children }: { children?: ReactNode }) {
   return (
-    <Box display="flex" alignItems="center" gap={6}>
+    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
       {children}
-    </Box>
+    </div>
   );
 }
 
@@ -42,31 +43,40 @@ export function Project({
   }, [owner, name]);
 
   return (
-    <Box
-      height="100%"
-      display="flex"
-      flexDirection="column"
-      alignItems="flex-start">
-      <TextLink href={url} style={{ fontSize: 20, fontWeight: 700 }}>
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+      }}>
+      <TextLink
+        href={url}
+        style={{ fontSize: 20, fontWeight: 700, lineHeight: 1.6 }}>
         {name}
       </TextLink>
-      <Box as="p" marginTop={8} flexGrow={1}>
-        {description}
-      </Box>
-      <Box
-        display="flex"
-        flexWrap="wrap"
-        alignItems="center"
-        gap={20}
-        marginTop={32}>
+      <p style={{ margin: "8px 0 0 0", flexGrow: 1 }}>{description}</p>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          gap: 20,
+          marginTop: 32,
+        }}>
         <Detail>
-          <Box
-            width={12}
-            height={12}
-            borderRadius={999}
-            backgroundColor={language.color}
-            outerStrokeColor="#fff3"
-            dark:outerStrokeWidth={1}
+          <div
+            style={pipe(
+              {
+                width: 12,
+                height: 12,
+                borderRadius: 999,
+                backgroundColor: language.color,
+              },
+              on(darkMode, {
+                boxShadow: "0 0 0 1px #fff3",
+              }),
+            )}
           />
           {language.name}
         </Detail>
@@ -95,7 +105,7 @@ export function Project({
             {stats ? stats.forks : forks}
           </Detail>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }

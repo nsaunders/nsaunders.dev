@@ -1,11 +1,12 @@
 import { json, useLoaderData } from "@remix-run/react";
+import { pipe } from "remeda";
 
 import * as Posts from "~/data/posts.js";
 import * as Projects from "~/data/projects.js";
 import { Block } from "~/reusable/block.js";
-import { Box } from "~/reusable/box.js";
 import { Card } from "~/reusable/card.js";
 import { black, gray, white } from "~/reusable/colors.js";
+import { darkMode, on } from "~/reusable/css.js";
 import { Hr } from "~/reusable/hr.js";
 import { Link } from "~/reusable/link.js";
 import { Project } from "~/reusable/project.js";
@@ -23,42 +24,56 @@ export async function loader() {
 export default function Index() {
   const { latestPost, featuredProject } = useLoaderData<typeof loader>();
   return (
-    <Box
-      as="main"
-      display="flex"
-      flexDirection="column"
-      gap={32}
-      marginBottom={32}>
-      <Box
-        as="header"
-        backgroundColor={black}
-        color={white}
-        paddingTop={32}
-        paddingBottom={64}>
+    <main
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 32,
+        marginBottom: 32,
+      }}>
+      <header
+        style={{
+          backgroundColor: black,
+          color: white,
+          paddingTop: 32,
+          paddingBottom: 64,
+        }}>
         <Block>
-          <Box as="hgroup" display="flex" flexDirection="column" gap={16}>
-            <Box as="h1" fontSize={48} fontWeight="normal">
+          <hgroup style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <h1
+              style={{
+                fontSize: 48,
+                fontWeight: "normal",
+                margin: 0,
+              }}>
               Hi there, I&apos;m Nick.
-            </Box>
-            <Box as="p" fontSize={24}>
+            </h1>
+            <p style={{ margin: 0, fontSize: 24 }}>
               I&apos;m an experienced software engineer focused on React,
               TypeScript, user experience, and design systems. I also dabble in
               functional programming.
-            </Box>
-          </Box>
+            </p>
+          </hgroup>
         </Block>
-      </Box>
+      </header>
       {[
         latestPost
           ? [
-              <Box
+              <div
                 key="latest-post"
-                display="flex"
-                flexDirection="column"
-                gap={16}>
-                <Box as="h1" fontSize={24} fontWeight="normal">
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 16,
+                }}>
+                <h1
+                  style={{
+                    fontSize: 24,
+                    fontWeight: "normal",
+                    margin: 0,
+                  }}>
                   Latest post
-                </Box>
+                </h1>
                 <Card>
                   <PostBrief
                     {...latestPost}
@@ -68,41 +83,50 @@ export default function Index() {
                 <TextLink as={Link} to="/posts">
                   View more
                 </TextLink>
-              </Box>,
+              </div>,
             ]
           : [],
         featuredProject
           ? [
-              <Box
+              <div
                 key="featured-project"
-                display="flex"
-                flexDirection="column"
-                gap={16}>
-                <Box as="h1" fontSize={24} fontWeight="normal">
+                style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <h1 style={{ fontSize: 24, fontWeight: "normal", margin: 0 }}>
                   Featured project
-                </Box>
-                <Box containerType="inline-size">
+                </h1>
+                <div style={{ containerType: "inline-size" }}>
                   <Card>
-                    <Box
-                      display="grid"
-                      gridTemplateColumns="1fr"
-                      containerLarge:gridTemplateColumns="1fr 1fr"
-                      gap={32}>
-                      <Box
-                        as="div"
-                        padding={32}
-                        backgroundColor={gray(12)}
-                        dark:backgroundColor={gray(80)}>
+                    <div
+                      style={pipe(
+                        {
+                          display: "grid",
+                          gridTemplateColumns: "1fr",
+                          gap: 32,
+                        },
+                        on("@container (min-width: 640px)", {
+                          gridTemplateColumns: "1fr 1fr",
+                        }),
+                      )}>
+                      <div
+                        style={pipe(
+                          {
+                            padding: 32,
+                            backgroundColor: gray(12),
+                          },
+                          on(darkMode, {
+                            backgroundColor: gray(80),
+                          }),
+                        )}>
                         <Project {...featuredProject} />
-                      </Box>
-                      <Box as="p">{featuredProject.story}</Box>
-                    </Box>
+                      </div>
+                      <p style={{ margin: 0 }}>{featuredProject.story}</p>
+                    </div>
                   </Card>
-                </Box>
+                </div>
                 <TextLink as={Link} to="/projects">
                   View more
                 </TextLink>
-              </Box>,
+              </div>,
             ]
           : [],
       ]
@@ -110,6 +134,6 @@ export default function Index() {
         .map((x, i) => (
           <Block key={i}>{x}</Block>
         ))}
-    </Box>
+    </main>
   );
 }

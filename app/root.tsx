@@ -1,13 +1,22 @@
 import "./global.css";
 
 import { Links, Meta, NavLink, Outlet, Scripts } from "@remix-run/react";
+import { pipe } from "remeda";
 
-import { Box, StyleSheet } from "~/reusable/box.js";
 import { black, blue, gray, red } from "~/reusable/colors.js";
 import { Logo } from "~/reusable/logo.js";
 
 import { createMeta } from "./data/meta.js";
 import { ClientOnly } from "./reusable/client-only.js";
+import {
+  and,
+  darkMode,
+  hover,
+  not,
+  on,
+  siblingHover,
+  styleSheet,
+} from "./reusable/css.js";
 import { Link } from "./reusable/link.js";
 import { ScreenReaderOnly } from "./reusable/screen-reader-only.js";
 import { TextLink } from "./reusable/text-link.js";
@@ -26,22 +35,27 @@ const themes = ["auto", "dark", "light"] as const;
 function ThemeSwitcher() {
   return (
     <>
-      <Box display="grid" placeItems="center" as="label">
-        <Box
-          as="select"
-          order={1}
-          gridColumn={1}
-          gridRow={1}
-          width={24}
-          height={24}
-          backgroundColor="transparent"
-          borderWidth={0}
-          color="transparent"
-          outlineWidth={0}
-          focus:outlineWidth={2}
-          outlineColor={gray(70)}
-          outlineStyle="solid"
-          outlineOffset={4}
+      <label style={{ display: "grid", placeItems: "center" }}>
+        <select
+          style={pipe(
+            {
+              order: 1,
+              gridColumn: 1,
+              gridRow: 1,
+              width: 24,
+              height: 24,
+              backgroundColor: "transparent",
+              borderWidth: 0,
+              color: "transparent",
+              outlineWidth: 0,
+              outlineColor: gray(70),
+              outlineStyle: "solid",
+              outlineOffset: 4,
+            },
+            on("&:focus-visible", {
+              outlineWidth: 2,
+            }),
+          )}
           onChange={e => {
             localStorage.setItem(themeKey, e.target.value);
             document
@@ -49,31 +63,44 @@ function ThemeSwitcher() {
               ?.setAttribute(themeAttr, e.target.value);
           }}>
           {themes.map(theme => (
-            <Box key={theme} as="option" backgroundColor="#fff" color="#000">
+            <option
+              key={theme}
+              style={{ backgroundColor: "#fff", color: "#000" }}>
               {theme}
-            </Box>
+            </option>
           ))}
-        </Box>
-        <Box
-          as="svg"
-          gridColumn={1}
-          gridRow={1}
-          width={16}
-          height={16}
+        </select>
+        <svg
+          style={pipe(
+            {
+              gridColumn: 1,
+              gridRow: 1,
+              width: 16,
+              height: 16,
+              stroke: "currentColor",
+            },
+            on(siblingHover, {
+              stroke: blue(40),
+            }),
+          )}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          siblingHover:stroke={blue(40)}
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round">
-          <Box
-            as="path"
+          <path
             d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-            display="none"
-            dark:display="unset"
+            style={pipe(
+              {
+                display: "none",
+              },
+              on(darkMode, {
+                display: "unset",
+              }),
+            )}
           />
-          <Box as="g" dark:display="none">
+          <g style={pipe({}, on(darkMode, { display: "none" }))}>
             <circle cx="12" cy="12" r="5" />
             <line x1="12" y1="1" x2="12" y2="3" />
             <line x1="12" y1="21" x2="12" y2="23" />
@@ -83,10 +110,10 @@ function ThemeSwitcher() {
             <line x1="21" y1="12" x2="23" y2="12" />
             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </Box>
-        </Box>
+          </g>
+        </svg>
         <ScreenReaderOnly>Theme</ScreenReaderOnly>
-      </Box>
+      </label>
       <script
         dangerouslySetInnerHTML={{
           __html: `document.currentScript.previousElementSibling.value = document.querySelector("html").getAttribute(${JSON.stringify(themeAttr)})`,
@@ -123,112 +150,149 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="apple-touch-icon" href="/favicon-180.png" sizes="180x180" />
         <Meta />
         <Links />
-        <StyleSheet />
+        <style dangerouslySetInnerHTML={{ __html: styleSheet() }} />
       </head>
-      <Box
-        as="body"
-        fontFamily="'Nunito Sans Variable', sans-serif"
-        minHeight="100dvh"
-        display="flex"
-        flexDirection="column"
-        alignItems="stretch"
-        backgroundColor={gray(10)}
-        color={gray(90)}
-        dark:backgroundColor={gray(90)}
-        dark:color={gray(10)}>
-        <Box
-          as="header"
+      <body
+        style={pipe(
+          {
+            margin: 0,
+            fontFamily: "'Nunito Sans Variable', sans-serif",
+            lineHeight: 1.5,
+            minHeight: "100dvh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+            backgroundColor: gray(10),
+            color: gray(90),
+          },
+          on(darkMode, {
+            backgroundColor: gray(90),
+            color: gray(10),
+          }),
+        )}>
+        <header
           data-theme="dark"
-          display="flex"
-          justifyContent="space-around"
-          backgroundColor={black}
-          color={gray(10)}
-          alignSelf="stretch">
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            padding="16px 0"
-            gap={16}
-            width="calc(100dvw - 32px)"
-            maxWidth={960}
-            backgroundColor={black}>
-            <Box
-              as={Link}
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            backgroundColor: black,
+            color: gray(10),
+            alignSelf: "stretch",
+          }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "16px 0",
+              gap: 16,
+              width: "calc(100dvw - 32px)",
+              maxWidth: 960,
+            }}>
+            <Link
               to="/"
-              color="inherit"
-              hoverUnselected:color={blue(40)}
-              activeUnselected:color={red(40)}
-              outlineColor={gray(70)}
-              outlineStyle="solid"
-              outlineWidth={0}
-              outlineOffset={4}
-              focus:outlineWidth={2}
-              display="flex">
+              style={pipe(
+                {
+                  display: "flex",
+                  color: "inherit",
+                  outlineColor: gray(70),
+                  outlineStyle: "solid",
+                  outlineWidth: 0,
+                  outlineOffset: 4,
+                },
+                on(and(hover, not("&.active")), {
+                  color: blue(40),
+                }),
+                on(and("&:active", not("&.active")), {
+                  color: red(40),
+                }),
+                on("&:focus-visible", {
+                  outlineWidth: 2,
+                }),
+              )}>
               <Logo />
               <ScreenReaderOnly>Home</ScreenReaderOnly>
-            </Box>
-            <Box display="flex" gap="inherit">
-              <Box
-                as="nav"
-                fontFamily="'Montserrat', sans-serif"
-                fontWeight={600}
-                letterSpacing="0.08em"
-                display="contents">
+            </Link>
+            <div style={{ display: "flex", gap: "inherit" }}>
+              <nav
+                style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontWeight: 600,
+                  letterSpacing: "0.08em",
+                  lineHeight: 12 / 7,
+                  display: "contents",
+                }}>
                 {["Posts", "Projects", "About"].map(x => (
-                  <Box
+                  <NavLink
                     key={x}
-                    as={NavLink}
                     reloadDocument
                     to={`/${x.toLowerCase()}`}
-                    color="inherit"
-                    hoverUnselected:color={blue(40)}
-                    activeUnselected:color={red(40)}
-                    fontSize={14}
-                    textDecorationLine="underline"
-                    textDecorationThickness={2}
-                    textUnderlineOffset={6}
-                    textDecorationColor="transparent"
-                    selected:textDecorationColor={blue(40)}
-                    outlineStyle="solid"
-                    outlineColor={gray(70)}
-                    outlineWidth={0}
-                    outlineOffset={4}
-                    focus:outlineWidth={2}>
+                    style={pipe(
+                      {
+                        color: "inherit",
+                        fontSize: 14,
+                        textDecorationLine: "underline",
+                        textDecorationThickness: 2,
+                        textUnderlineOffset: 6,
+                        textDecorationColor: "transparent",
+                        outlineStyle: "solid",
+                        outlineColor: gray(70),
+                        outlineWidth: 0,
+                        outlineOffset: 4,
+                      },
+                      on(and(hover, not("&.active")), {
+                        color: blue(40),
+                      }),
+                      on(and("&:active", not("&.active")), {
+                        color: red(40),
+                      }),
+                      on("&.active", {
+                        textDecorationColor: blue(40),
+                      }),
+                      on("&:focus-visible", {
+                        outlineWidth: 2,
+                      }),
+                    )}>
                     {x}
-                  </Box>
+                  </NavLink>
                 ))}
-              </Box>
-              <Box width={1} height={24}>
-                <Vr />
-              </Box>
+              </nav>
+              <Vr style={{ height: 24 }} />
               <ThemeSwitcher />
-            </Box>
-          </Box>
-        </Box>
-        <Box flexGrow={1}>{children}</Box>
-        <Box
-          as="footer"
-          fontSize={14}
-          color={gray(70)}
-          dark:color={gray(30)}
-          width="calc(100dvw - 32px)"
-          maxWidth={960}
-          margin="0 auto"
-          display="flex"
-          flexWrap="wrap"
-          justifyContent="center"
-          paddingBlock={8}>
-          <Box>
+            </div>
+          </div>
+        </header>
+        <div style={{ flexGrow: 1 }}>{children}</div>
+        <footer
+          style={pipe(
+            {
+              fontSize: 14,
+              lineHeight: 12 / 7,
+              color: gray(70),
+              width: "calc(100dvw - 32px)",
+              maxWidth: 960,
+              margin: "0 auto",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              paddingBlock: 8,
+            },
+            on(darkMode, {
+              color: gray(30),
+            }),
+          )}>
+          <div>
             &copy; <ClientOnly>{new Date().getFullYear()}</ClientOnly> Nick
             Saunders
-          </Box>
-          <Box
-            flexBasis="calc((360px - 100%) * 999)"
-            flexGrow={1}
-            flexWrap="wrap"
+          </div>
+          <div
+            style={{
+              flexBasis: "calc((360px - 100%) * 999)",
+              flexGrow: 1,
+              flexWrap: "wrap",
+            }}
           />
-          <Box display="flex" gap={12}>
+          <div style={{ display: "flex", gap: 12 }}>
             {Object.entries({
               GitHub: "https://github.com/nsaunders",
               LinkedIn: "https://linkedin.com/in/nicksaunders",
@@ -239,10 +303,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {children}
               </TextLink>
             ))}
-          </Box>
-        </Box>
+          </div>
+        </footer>
         <Scripts />
-      </Box>
+      </body>
     </html>
   );
 }

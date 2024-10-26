@@ -5,16 +5,18 @@ import type { ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import Markdown from "react-markdown";
 import readingTime from "reading-time";
+import { pipe } from "remeda";
 
 import { createMeta } from "~/data/meta.js";
 import * as Posts from "~/data/posts.js";
 import { Block } from "~/reusable/block.js";
-import { Box } from "~/reusable/box.js";
 import { ClientOnly } from "~/reusable/client-only.js";
 import { blue, gray, red, white } from "~/reusable/colors.js";
+import { darkMode, hover, on } from "~/reusable/css.js";
 import { highlighter } from "~/reusable/highlighter.js";
 import { Hr } from "~/reusable/hr.js";
 import { markdownComponents } from "~/reusable/markdown-components.js";
+import { ScreenReaderOnly } from "~/reusable/screen-reader-only.js";
 import { TextLink } from "~/reusable/text-link.js";
 
 import { resolveURL } from "../data/resolve-url.js";
@@ -53,9 +55,9 @@ export const meta = createMeta<typeof loader>(post => ({
 
 function LabelValuePair({ children }: { children?: ReactNode }) {
   return (
-    <Box display="flex" gap={4} alignItems="center">
+    <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
       {children}
-    </Box>
+    </div>
   );
 }
 
@@ -63,41 +65,63 @@ export default function Page() {
   const post = useLoaderData<typeof loader>();
   return (
     <main>
-      <Box
-        as="header"
-        backgroundColor={gray(15)}
-        dark:backgroundColor={gray(85)}
-        paddingBlock={64}>
+      <header
+        style={pipe(
+          {
+            backgroundColor: gray(15),
+
+            paddingBlock: 64,
+          },
+          on(darkMode, {
+            backgroundColor: gray(85),
+          }),
+        )}>
         <Block>
-          <Box as="hgroup" display="flex" flexDirection="column" gap={32}>
-            <Box
-              as="h1"
-              fontSize={40}
-              fontWeight="normal"
-              lineHeight={1.25}
-              color={blue(80)}
-              dark:color={blue(20)}>
+          <hgroup
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 32,
+            }}>
+            <h1
+              style={pipe(
+                {
+                  fontSize: 40,
+                  fontWeight: "normal",
+                  lineHeight: 1.3,
+                  color: blue(80),
+                  margin: 0,
+                },
+                on(darkMode, {
+                  color: blue(20),
+                }),
+              )}>
               {post.title}
-            </Box>
-            <Box
-              as="img"
+            </h1>
+            <img
               src={resolveURL(
                 `/optimized/960x540/posts/${post.name}/`,
                 post.image.src,
               )}
               alt={post.image.alt}
-              aspectRatio="16 / 9"
-              objectFit="cover"
+              style={{
+                aspectRatio: "16 / 9",
+                objectFit: "cover",
+              }}
             />
-            <Box as="p" fontSize={24}>
-              {post.description}
-            </Box>
-            <Box
-              display="flex"
-              gap={16}
-              alignItems="center"
-              color={gray(70)}
-              dark:color={gray(30)}>
+            <p style={{ margin: 0, fontSize: 24 }}>{post.description}</p>
+            <div
+              style={pipe(
+                {
+                  display: "flex",
+                  gap: 16,
+                  alignItems: "center",
+                  color: gray(70),
+                },
+                on(darkMode, {
+                  color: gray(30),
+                }),
+              )}>
               <LabelValuePair>
                 <svg
                   style={{ width: 16, height: 16 }}
@@ -138,25 +162,31 @@ export default function Page() {
                   {readingTime(post.markdown).minutes.toFixed(0)} minutes
                 </span>
               </LabelValuePair>
-            </Box>
-          </Box>
+            </div>
+          </hgroup>
         </Block>
-      </Box>
+      </header>
       <Block>
-        <Box display="flex" flexDirection="column" gap={16} paddingBlock={32}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+            paddingBlock: 32,
+          }}>
           <div dangerouslySetInnerHTML={{ __html: post.html }} />
-          <Box display="flex" gap={8} color={gray(50)}>
+          <div style={{ display: "flex", gap: 8, color: gray(50) }}>
             <TextLink href={post.discussionHref}>Discuss this post</TextLink>
             <span>|</span>
             <TextLink href={post.editHref}>Suggest an edit</TextLink>
-          </Box>
-        </Box>
+          </div>
+        </div>
       </Block>
       <Block>
         <Hr />
-        <Box height={32} />
+        <div style={{ height: 32 }} />
         <Subscribe />
-        <Box height={32} />
+        <div style={{ height: 32 }} />
       </Block>
     </main>
   );
@@ -164,39 +194,60 @@ export default function Page() {
 
 function Subscribe() {
   return (
-    <Box as="section" display="flex" flexWrap="wrap">
-      <Box
-        flexGrow={1}
-        flexShrink={1}
-        flexBasis="calc((60ch - 100%) * 999)"
-        backgroundColor={gray(5)}
-        color={gray(80)}
-        padding={48}>
-        <Box as="h1" fontSize={32} fontWeight={700} lineHeight={1.25}>
+    <section style={{ display: "flex", flexWrap: "wrap" }}>
+      <div
+        style={pipe(
+          {
+            flexGrow: 1,
+            flexShrink: 1,
+            flexBasis: "calc((60ch - 100%) * 999)",
+            backgroundColor: white,
+            color: gray(80),
+            padding: 48,
+            boxShadow: `inset 0 0 0 1px ${gray(20)}`,
+          },
+          on(darkMode, {
+            boxShadow: "none",
+          }),
+        )}>
+        <h1
+          style={{
+            margin: 0,
+            fontSize: 32,
+            fontWeight: 700,
+            lineHeight: 1.25,
+          }}>
           Stay informed
-        </Box>
-        <Box as="p" fontSize={24} lineHeight={1.25} marginBlock={16}>
+        </h1>
+        <p
+          style={{
+            margin: 0,
+            fontSize: 24,
+            lineHeight: 4 / 3,
+            marginBlock: 16,
+          }}>
           Subscribe to email updates and be the first to know when I post new
           content.
-        </Box>
-        <Box as="p" lineHeight={1.25} color={gray(60)}>
+        </p>
+        <p style={{ lineHeight: 1.25, color: gray(60) }}>
           I hate spam as much as you do.
           <br />
           Unsubscribe at any time — no hard feelings!
-        </Box>
-      </Box>
-      <Box
-        as="form"
-        backgroundColor={gray(80)}
-        color={white}
-        flexDirection="column"
-        alignItems="stretch"
-        padding={48}
-        gap={32}
-        display="flex"
-        flexGrow={1}
-        flexShrink={1}
-        flexBasis="calc((60ch - 100%) * 999)"
+        </p>
+      </div>
+      <form
+        style={{
+          backgroundColor: gray(80),
+          color: white,
+          flexDirection: "column",
+          alignItems: "stretch",
+          padding: 48,
+          gap: 32,
+          display: "flex",
+          flexGrow: 1,
+          flexShrink: 1,
+          flexBasis: "calc((60ch - 100%) * 999)",
+        }}
         method="POST"
         action="https://dev.us21.list-manage.com/subscribe/post?u=1961e884a06fdad7a53bc160e&id=3f29e7fcdf&f_id=00905ce1f0">
         {(
@@ -205,63 +256,78 @@ function Subscribe() {
             ["First name", "text", "FNAME", false],
           ] as const
         ).map(([label, inputType, name, required]) => (
-          <Box
+          <label
             key={label}
-            as="label"
-            display="flex"
-            flexDirection="column"
-            gap={8}>
-            <Box as="span" lineHeight={1}>
-              {label}
-            </Box>
-            <Box
-              as="input"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+            }}>
+            <span style={{ lineHeight: 1 }}>{label}</span>
+            <input
               type={inputType}
               name={name}
               required={required}
-              backgroundColor={gray(5)}
-              color={gray(90)}
-              lineHeight={1}
-              padding={8}
-              borderWidth={0}
-              borderRadius={4}
-              outlineWidth={0}
-              outlineStyle="solid"
-              outlineColor={blue(50)}
-              outlineOffset={2}
-              focus:outlineWidth={2}
+              style={pipe(
+                {
+                  font: "inherit",
+                  lineHeight: "inherit",
+                  backgroundColor: gray(5),
+                  color: gray(90),
+                  padding: 8,
+                  borderWidth: 0,
+                  borderRadius: 4,
+                  outlineWidth: 0,
+                  outlineStyle: "solid",
+                  outlineColor: blue(50),
+                  outlineOffset: 2,
+                },
+                on("&:focus-visible", {
+                  outlineWidth: 2,
+                }),
+              )}
             />
-          </Box>
+          </label>
         ))}
-        <Box aria-hidden="true" position="absolute" left={-5000}>
+        <ScreenReaderOnly>
           <input
             data-desc="thwart-bots"
             type="text"
             name="b_1961e884a06fdad7a53bc160e_3f29e7fcdf"
             tabIndex={-1}
           />
-        </Box>
-        <Box
-          as="button"
+        </ScreenReaderOnly>
+        <button
           type="submit"
-          alignSelf="center"
-          lineHeight={1}
-          paddingBlock={8}
-          paddingInline={12}
-          borderWidth={0}
-          borderRadius={4}
-          backgroundColor={blue(50)}
-          color={white}
-          outlineWidth={0}
-          outlineStyle="solid"
-          outlineColor={blue(50)}
-          outlineOffset={2}
-          focus:outlineWidth={2}
-          hover:backgroundColor={blue(40)}
-          active:backgroundColor={red(40)}>
+          style={pipe(
+            {
+              alignSelf: "center",
+              font: "inherit",
+              lineHeight: "inherit",
+              paddingBlock: 8,
+              paddingInline: 12,
+              borderWidth: 0,
+              borderRadius: 4,
+              backgroundColor: blue(50),
+              color: white,
+              outlineWidth: 0,
+              outlineStyle: "solid",
+              outlineColor: blue(50),
+              outlineOffset: 2,
+            },
+            on("&:focus-visible", {
+              outlineWidth: 2,
+            }),
+            on(hover, {
+              backgroundColor: blue(40),
+            }),
+            on("&:active", {
+              backgroundColor: red(40),
+            }),
+          )}>
           Subscribe
-        </Box>
-      </Box>
-    </Box>
+        </button>
+      </form>
+    </section>
   );
 }

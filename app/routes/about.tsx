@@ -2,12 +2,13 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
 import Markdown from "react-markdown";
+import { pipe } from "remeda";
 
 import { createMeta } from "~/data/meta.js";
 import * as Pages from "~/data/pages.js";
 import { Block } from "~/reusable/block.js";
-import { Box } from "~/reusable/box.js";
 import { blue, gray } from "~/reusable/colors.js";
+import { darkMode, on } from "~/reusable/css.js";
 import { highlighter } from "~/reusable/highlighter.js";
 import { markdownComponents } from "~/reusable/markdown-components.js";
 
@@ -40,39 +41,55 @@ export default function About() {
   const { html } = useLoaderData<typeof loader>();
   return (
     <main>
-      <Box
-        as="header"
-        backgroundColor={gray(15)}
-        dark:backgroundColor={gray(85)}
-        paddingBlock={64}>
+      <header
+        style={pipe(
+          {
+            backgroundColor: gray(15),
+            paddingBlock: 64,
+          },
+          on(darkMode, {
+            backgroundColor: gray(85),
+          }),
+        )}>
         <Block>
-          <Box
-            as="hgroup"
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between">
-            <Box
-              as="h1"
-              fontSize={40}
-              fontWeight="normal"
-              lineHeight={1.25}
-              color={blue(80)}
-              dark:color={blue(20)}>
+          <hgroup
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+            <h1
+              style={pipe(
+                {
+                  margin: 0,
+                  fontSize: 40,
+                  fontWeight: "normal",
+                  lineHeight: 1.25,
+                  color: blue(80),
+                },
+                on(darkMode, {
+                  color: blue(20),
+                }),
+              )}>
               About
-            </Box>
-            <Box
-              as="img"
+            </h1>
+            <img
               src="https://github.com/nsaunders.png"
               alt="Nick Saunders"
-              borderRadius={999}
-              width={128}
-              height={128}
+              style={{
+                width: 128,
+                height: 128,
+                borderRadius: 999,
+              }}
             />
-          </Box>
+          </hgroup>
         </Block>
-      </Box>
+      </header>
       <Block>
-        <Box marginBlock={32} dangerouslySetInnerHTML={{ __html: html }} />
+        <div
+          style={{ marginBlock: 32 }}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
       </Block>
     </main>
   );

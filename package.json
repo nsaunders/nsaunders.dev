@@ -13,7 +13,7 @@
     "typecheck": "tsc --project tsconfig.app.json --noEmit && tsc --project tsconfig.scripts.json --noEmit"
   },
   "devDependencies": {
-    "@embellish/react": "^0.7.0",
+    "@css-hooks/react": "^3.0.1",
     "@eslint/js": "^9.3.0",
     "@fontsource-variable/inconsolata": "^5.0.18",
     "@fontsource-variable/nunito-sans": "^5.0.14",
@@ -51,6 +51,7 @@
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
     "reading-time": "~1.4",
+    "remeda": "^2.15.2",
     "sharp": "^0.33.4",
     "shiki": "^1.12.0",
     "shx": "^0.3.4",

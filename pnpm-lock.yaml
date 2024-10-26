@@ -8,9 +8,9 @@ importers:
 
   .:
     devDependencies:
-      '@embellish/react':
-        specifier: ^0.7.0
-        version: 0.7.0(@types/react@18.3.3)(react@18.3.1)
+      '@css-hooks/react':
+        specifier: ^3.0.1
+        version: 3.0.1(@types/react@18.3.3)
       '@eslint/js':
         specifier: ^9.3.0
         version: 9.7.0
@@ -122,6 +122,9 @@ importers:
       reading-time:
         specifier: ~1.4
         version: 1.4.0
+      remeda:
+        specifier: ^2.15.2
+        version: 2.15.2
       sharp:
         specifier: ^0.33.4
         version: 0.33.4
@@ -359,11 +362,16 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@embellish/react@0.7.0':
-    resolution: {integrity: sha512-gyYX2h0yPHEzRB19EQbGD0MH5kc0QUunJ21SuxQ/7pbaI20T7LfUZmCZZVjpTe5ESvuM73/V/NE5vJiu8K9Cvg==}
+  '@css-hooks/core@3.0.1':
+    resolution: {integrity: sha512-fY6P+6hU3epzIzHbVBolt8CZ+QrpCSzYH6Ln8mqfiDDltD9bfvnhWEGr59e1mFyJoEft4dDUgXKI4frR90aWqQ==}
+
+  '@css-hooks/react@3.0.1':
+    resolution: {integrity: sha512-XjT/kI2x2gXFaNQ+6fEEJbMY/UTULNHTDDt1s37lvFdbIk1S95sKr8hBA3GVlUaJki2fqCtDOvgyRtElLvomlA==}
     peerDependencies:
-      '@types/react': '>=17 <20'
-      react: '>=17 <20'
+      '@types/react': '>=16 <20'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@emnapi/runtime@1.2.0':
     resolution: {integrity: sha512-bV21/9LQmcQeCPEg3BDFtvwL6cwiTMksYNWQQ4KOxCZikEGalWtenoZ0wCiukJINlGCIi2KXx01g4FoH/LxpzQ==}
@@ -3619,6 +3627,9 @@ packages:
   remark-rehype@11.1.0:
     resolution: {integrity: sha512-z3tJrAs2kIs1AqIIy6pzHmAHlF1hWQ+OdY4/hv+Wxe35EhyLKcajL33iUEn3ScxtFox9nUvRufR/Zre8Q08H/g==}
 
+  remeda@2.15.2:
+    resolution: {integrity: sha512-xcvVY/Xo5D5/s8SjLqEHcYOhmWtzmyyKW4BEaUZ6NVbIHsO03lyxnM5lfy1Mtytehkb9Zo+RJtIsRgkNOEDmEw==}
+
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
@@ -4041,6 +4052,10 @@ packages:
   type-fest@0.20.2:
     resolution: {integrity: sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==}
     engines: {node: '>=10'}
+
+  type-fest@4.26.1:
+    resolution: {integrity: sha512-yOGpmOAL7CkKe/91I5O3gPICmJNLJ1G4zFYVAsRHg7M64biSnPtRj0WNQt++bRkjYOqjWXrhnUw1utzmVErAdg==}
+    engines: {node: '>=16'}
 
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
@@ -4652,10 +4667,13 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@embellish/react@0.7.0(@types/react@18.3.3)(react@18.3.1)':
+  '@css-hooks/core@3.0.1': {}
+
+  '@css-hooks/react@3.0.1(@types/react@18.3.3)':
     dependencies:
+      '@css-hooks/core': 3.0.1
+    optionalDependencies:
       '@types/react': 18.3.3
-      react: 18.3.1
 
   '@emnapi/runtime@1.2.0':
     dependencies:
@@ -8525,6 +8543,10 @@ snapshots:
       unified: 11.0.5
       vfile: 6.0.2
 
+  remeda@2.15.2:
+    dependencies:
+      type-fest: 4.26.1
+
   require-directory@2.1.1: {}
 
   require-like@0.1.2: {}
@@ -9014,6 +9036,8 @@ snapshots:
       prelude-ls: 1.2.1
 
   type-fest@0.20.2: {}
+
+  type-fest@4.26.1: {}
 
   type-is@1.6.18:
     dependencies:

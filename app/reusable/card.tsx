@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
+import { pipe } from "remeda";
 
-import { Box } from "./box.js";
 import { gray, white } from "./colors.js";
+import { darkMode, on } from "./css.js";
 
 export function Card({
   children,
@@ -11,14 +12,19 @@ export function Card({
   importance?: "primary" | "secondary";
 }) {
   return (
-    <Box
-      backgroundColor={importance === "primary" ? "#fff" : white}
-      innerStrokeWidth={1}
-      innerStrokeColor={gray(importance === "primary" ? 30 : 20)}
-      dark:innerStrokeWidth={0}
-      dark:backgroundColor={importance === "primary" ? gray(85) : gray(91)}
-      padding={32}>
+    <div
+      style={pipe(
+        {
+          backgroundColor: importance === "primary" ? "#fff" : white,
+          boxShadow: `0 0 0 1px ${gray(importance === "primary" ? 30 : 20)}`,
+          padding: 32,
+        },
+        on(darkMode, {
+          backgroundColor: importance === "primary" ? gray(85) : gray(91),
+          boxShadow: "none",
+        }),
+      )}>
       {children}
-    </Box>
+    </div>
   );
 }
