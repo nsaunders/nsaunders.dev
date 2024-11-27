@@ -1,5 +1,4 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import type { ReactNode } from "react";
 import { renderToString } from "react-dom/server";
@@ -30,7 +29,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
   const highlighterInstance = await highlighter();
-  const res = json({
+  const res = {
     ...post,
     html: renderToString(
       <Markdown
@@ -41,7 +40,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
         {post.markdown}
       </Markdown>,
     ),
-  });
+  };
   highlighterInstance.dispose();
   return res;
 }

@@ -1,4 +1,3 @@
-import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
 import Markdown from "react-markdown";
@@ -15,7 +14,7 @@ import { markdownComponents } from "~/reusable/markdown-components.js";
 export async function loader() {
   const page = await Pages.getByName("about");
   const highlighterInstance = await highlighter();
-  const res = json({
+  const res = {
     ...page,
     html: renderToString(
       <Markdown
@@ -26,7 +25,7 @@ export async function loader() {
         {page.markdown}
       </Markdown>,
     ),
-  });
+  };
   highlighterInstance.dispose();
   return res;
 }

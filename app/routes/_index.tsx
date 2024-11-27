@@ -1,4 +1,4 @@
-import { json, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { pipe } from "remeda";
 
 import * as Posts from "~/data/posts.js";
@@ -15,10 +15,10 @@ import { TextLink } from "~/reusable/text-link.js";
 import { PostBrief } from "../reusable/post-brief.js";
 
 export async function loader() {
-  return json({
+  return {
     latestPost: await Posts.getLatest(),
     featuredProject: await Projects.getFeatured(),
-  });
+  };
 }
 
 export default function Index() {
