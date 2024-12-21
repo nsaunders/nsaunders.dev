@@ -1,9 +1,10 @@
 {
+  "files": [],
   "compilerOptions": {
     "noEmit": true
   },
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.scripts.json" }
+    { "path": "./tsconfig.node.json" }
   ]
 }

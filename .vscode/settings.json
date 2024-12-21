@@ -1,14 +1,11 @@
 {
-  "html.validate.styles": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.useFlatConfig": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "always"
-  },
-  "editor.formatOnSave": true,
-  "rewrap.wrappingColumn": 80,
-  "rewrap.autoWrap.enabled": true,
-  "javascript.preferences.importModuleSpecifier": "shortest",
-  "typescript.preferences.importModuleSpecifier": "shortest",
   "javascript.preferences.importModuleSpecifierEnding": "js",
-  "typescript.preferences.importModuleSpecifierEnding": "js"
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.importModuleSpecifier": "relative"
 }
