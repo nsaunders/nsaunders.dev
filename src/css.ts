@@ -2,6 +2,7 @@ import { createHooks } from "@css-hooks/react";
 import type { CSSProperties } from "react";
 
 export const { styleSheet, on, and, or, not } = createHooks(
+  "@container (width >= 400px)",
   "@container (min-width: 640px)",
   "@media (prefers-color-scheme: dark)",
   "@media (hover: hover)",

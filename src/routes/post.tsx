@@ -200,138 +200,158 @@ function Subscribe() {
   return (
     <section style={{ display: "flex", flexWrap: "wrap" }}>
       <div
-        style={pipe(
-          {
-            flexGrow: 1,
-            flexShrink: 1,
-            flexBasis: "calc((60ch - 100%) * 999)",
-            backgroundColor: white,
-            color: gray(80),
-            padding: 48,
-            boxShadow: `inset 0 0 0 1px ${gray(20)}`,
-          },
-          on(darkMode, {
-            boxShadow: "none",
-          }),
-        )}>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 32,
-            fontWeight: 700,
-            lineHeight: 1.25,
-          }}>
-          Stay informed
-        </h1>
-        <p
-          style={{
-            margin: 0,
-            fontSize: 24,
-            lineHeight: 4 / 3,
-            marginBlock: 16,
-          }}>
-          Subscribe to email updates and be the first to know when I post new
-          content.
-        </p>
-        <p style={{ lineHeight: 1.25, color: gray(60) }}>
-          I hate spam as much as you do.
-          <br />
-          Unsubscribe at any time — no hard feelings!
-        </p>
-      </div>
-      <form
         style={{
-          backgroundColor: gray(80),
-          color: white,
-          flexDirection: "column",
-          alignItems: "stretch",
-          padding: 48,
-          gap: 32,
-          display: "flex",
+          containerType: "inline-size",
           flexGrow: 1,
           flexShrink: 1,
           flexBasis: "calc((60ch - 100%) * 999)",
-        }}
-        method="POST"
-        action="https://dev.us21.list-manage.com/subscribe/post?u=1961e884a06fdad7a53bc160e&id=3f29e7fcdf&f_id=00905ce1f0">
-        {(
-          [
-            ["Email", "email", "EMAIL", true],
-            ["First name", "text", "FNAME", false],
-          ] as const
-        ).map(([label, inputType, name, required]) => (
-          <label
-            key={label}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 8,
-            }}>
-            <span style={{ lineHeight: 1 }}>{label}</span>
-            <input
-              type={inputType}
-              name={name}
-              required={required}
-              style={pipe(
-                {
-                  font: "inherit",
-                  lineHeight: "inherit",
-                  backgroundColor: gray(5),
-                  color: gray(90),
-                  padding: 8,
-                  borderWidth: 0,
-                  borderRadius: 4,
-                  outlineWidth: 0,
-                  outlineStyle: "solid",
-                  outlineColor: blue(50),
-                  outlineOffset: 2,
-                },
-                on("&:focus-visible", {
-                  outlineWidth: 2,
-                }),
-              )}
-            />
-          </label>
-        ))}
-        <ScreenReaderOnly>
-          <input
-            data-desc="thwart-bots"
-            type="text"
-            name="b_1961e884a06fdad7a53bc160e_3f29e7fcdf"
-            tabIndex={-1}
-          />
-        </ScreenReaderOnly>
-        <button
-          type="submit"
+          display: "grid",
+        }}>
+        <div
           style={pipe(
             {
-              alignSelf: "center",
-              font: "inherit",
-              lineHeight: "inherit",
-              paddingBlock: 8,
-              paddingInline: 12,
-              borderWidth: 0,
-              borderRadius: 4,
-              backgroundColor: blue(50),
-              color: white,
-              outlineWidth: 0,
-              outlineStyle: "solid",
-              outlineColor: blue(50),
-              outlineOffset: 2,
+              backgroundColor: white,
+              color: gray(80),
+              padding: 32,
+              boxShadow: `inset 0 0 0 1px ${gray(20)}`,
             },
-            on("&:focus-visible", {
-              outlineWidth: 2,
+            on(darkMode, {
+              boxShadow: "none",
             }),
-            on(hover, {
-              backgroundColor: blue(40),
-            }),
-            on("&:active", {
-              backgroundColor: red(40),
+            on("@container (width >= 400px)", {
+              padding: 48,
             }),
           )}>
-          Subscribe
-        </button>
-      </form>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: 32,
+              fontWeight: 700,
+              lineHeight: 1.25,
+            }}>
+            Stay informed
+          </h1>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 24,
+              lineHeight: 4 / 3,
+              marginBlock: 16,
+            }}>
+            Subscribe to email updates and be the first to know when I post new
+            content.
+          </p>
+          <p style={{ lineHeight: 1.25, color: gray(60) }}>
+            I hate spam as much as you do.
+            <br />
+            Unsubscribe at any time — no hard feelings!
+          </p>
+        </div>
+      </div>
+      <div
+        style={{
+          containerType: "inline-size",
+          flexGrow: 1,
+          flexShrink: 1,
+          flexBasis: "calc((60ch - 100%) * 999)",
+          display: "grid",
+        }}>
+        <form
+          style={pipe(
+            {
+              backgroundColor: gray(80),
+              color: white,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "stretch",
+              padding: 32,
+              gap: 32,
+            },
+            on("@container (width >= 400px)", {
+              padding: 48,
+            }),
+          )}
+          method="POST"
+          action="https://dev.us21.list-manage.com/subscribe/post?u=1961e884a06fdad7a53bc160e&id=3f29e7fcdf&f_id=00905ce1f0">
+          {(
+            [
+              ["Email", "email", "EMAIL", true],
+              ["First name", "text", "FNAME", false],
+            ] as const
+          ).map(([label, inputType, name, required]) => (
+            <label
+              key={label}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+              }}>
+              <span style={{ lineHeight: 1 }}>{label}</span>
+              <input
+                type={inputType}
+                name={name}
+                required={required}
+                style={pipe(
+                  {
+                    font: "inherit",
+                    lineHeight: "inherit",
+                    backgroundColor: gray(5),
+                    color: gray(90),
+                    padding: 8,
+                    borderWidth: 0,
+                    borderRadius: 4,
+                    outlineWidth: 0,
+                    outlineStyle: "solid",
+                    outlineColor: blue(50),
+                    outlineOffset: 2,
+                  },
+                  on("&:focus-visible", {
+                    outlineWidth: 2,
+                  }),
+                )}
+              />
+            </label>
+          ))}
+          <ScreenReaderOnly>
+            <input
+              data-desc="thwart-bots"
+              type="text"
+              name="b_1961e884a06fdad7a53bc160e_3f29e7fcdf"
+              tabIndex={-1}
+            />
+          </ScreenReaderOnly>
+          <button
+            type="submit"
+            style={pipe(
+              {
+                alignSelf: "center",
+                font: "inherit",
+                lineHeight: "inherit",
+                paddingBlock: 8,
+                paddingInline: 12,
+                borderWidth: 0,
+                borderRadius: 4,
+                backgroundColor: blue(50),
+                color: white,
+                outlineWidth: 0,
+                outlineStyle: "solid",
+                outlineColor: blue(50),
+                outlineOffset: 2,
+              },
+              on("&:focus-visible", {
+                outlineWidth: 2,
+              }),
+              on(hover, {
+                backgroundColor: blue(40),
+              }),
+              on("&:active", {
+                backgroundColor: red(40),
+              }),
+            )}>
+            Subscribe
+          </button>
+        </form>
+      </div>
     </section>
   );
 }
