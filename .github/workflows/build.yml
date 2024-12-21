@@ -31,10 +31,14 @@ jobs:
 
       - run: pnpm typecheck
 
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+
       - run: pnpm build
         env:
           APP_URL: https://nsaunders.dev
           GITHUB_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
 
       - if: github.ref == 'refs/heads/master'
         name: cloudflare deployment
