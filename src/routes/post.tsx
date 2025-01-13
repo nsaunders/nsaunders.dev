@@ -118,6 +118,7 @@ export default function Post({ loaderData: post }: Route.ComponentProps) {
               style={pipe(
                 {
                   display: "flex",
+                  flexWrap: "wrap",
                   gap: 16,
                   alignItems: "center",
                   color: gray(70),
@@ -148,6 +149,28 @@ export default function Post({ loaderData: post }: Route.ComponentProps) {
                   </ClientOnly>
                 </span>
               </LabelValuePair>
+              {post.updated ? (
+                <LabelValuePair>
+                  <svg
+                    style={{ width: 16, height: 16 }}
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round">
+                    <polyline points="23 4 23 10 17 10" />
+                    <polyline points="1 20 1 14 7 14" />
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                  </svg>
+                  <span>
+                    <ClientOnly>
+                      {new Date(post.updated).toLocaleDateString(undefined, {
+                        dateStyle: "long",
+                      })}
+                    </ClientOnly>
+                  </span>
+                </LabelValuePair>
+              ) : undefined}
               <LabelValuePair>
                 <svg
                   width={16}

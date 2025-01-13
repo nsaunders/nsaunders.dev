@@ -60,6 +60,7 @@ export async function getPostByName(name: string) {
           image_src: v.string(),
           image_alt: v.string(),
           published: v.date(),
+          updated: v.optional(v.date()),
           tags: v.array(v.string()),
         }),
         v.transform(({ image_src, image_alt, ...rest }) => ({
