@@ -1,6 +1,7 @@
 import type { ComponentProps, CSSProperties } from "react";
 import { isValidElement } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkRemoveComments from "remark-remove-comments";
 import { pipe } from "remeda";
 import getSlug from "slug";
 
@@ -98,10 +99,17 @@ function makeHeading(level: 1 | 2 | 3 | 4 | 5 | 6, style: CSSProperties) {
 
 export function Markdown({
   components,
+  remarkPlugins,
   ...restProps
 }: ComponentProps<typeof ReactMarkdown>) {
   return (
     <ReactMarkdown
+      remarkPlugins={(
+        [remarkRemoveComments] as Exclude<
+          typeof remarkPlugins,
+          null | undefined
+        >
+      ).concat(remarkPlugins || [])}
       components={{
         a({ is: _is, node: _node, ...props }) {
           return <TextLink as="a" {...props} />;
