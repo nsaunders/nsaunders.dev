@@ -29,7 +29,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
   const size = Math.min(Math.ceil(Math.min(width, height) * 0.75), 128);
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
 
   const page = await browser.newPage();
   await page.setViewport({ width, height });
