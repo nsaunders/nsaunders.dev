@@ -6,7 +6,7 @@ import { pipe } from "remeda";
 import getSlug from "slug";
 
 import { darkMode, groupHover, merge, on } from "../css.ts";
-import { gray, white } from "../design/colors.ts";
+import { black, gray, white } from "../design/colors.ts";
 import { monospace } from "../design/fonts.ts";
 import { SyntaxHighlighter } from "./syntax-highlighter.tsx";
 import { TextLink } from "./text-link.js";
@@ -171,7 +171,15 @@ export function Markdown({
             <code
               {...rest}
               className={className}
-              style={{ fontFamily: monospace }}>
+              style={pipe(
+                {
+                  fontFamily: monospace,
+                  background: white,
+                },
+                on(darkMode, {
+                  background: black,
+                }),
+              )}>
               {children}
             </code>
           );
