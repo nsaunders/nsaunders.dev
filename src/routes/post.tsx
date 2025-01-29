@@ -53,7 +53,7 @@ export const meta: Route.MetaFunction = createMetaDescriptors(
   ({ data: post, location: { pathname } }) => ({
     title: post.title,
     description: post.description,
-    image: URL.parse(post.image.src, `x:${pathname}/`)?.pathname,
+    image: URL.parse("opengraph.png", `x:${pathname}/`)?.pathname,
   }),
 );
 
