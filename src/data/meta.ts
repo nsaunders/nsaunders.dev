@@ -1,7 +1,9 @@
 import type { MetaDescriptors } from "react-router/route-module";
 
 const url = (pathname: string) =>
-  URL.parse(pathname, process.env.APP_URL)?.toString();
+  URL.canParse(pathname, process.env.APP_URL)
+    ? new URL(pathname, process.env.APP_URL).toString()
+    : undefined;
 
 type CreateMetaDescriptorArgs = {
   title: string;

@@ -28,9 +28,9 @@ export async function loader({ params: { name } }: Route.LoaderArgs) {
   const { prelude: stream } = await prerenderToNodeStream(
     <Markdown
       urlTransform={url => {
-        return URL.parse(url, `x:/posts/${post.name}/`)
-          ?.toString()
-          .replace(/^x:/, "");
+        return URL.canParse(url, `x:/posts/${post.name}/`)
+          ? new URL(url, `x:/posts/${post.name}/`).toString().replace(/^x:/, "")
+          : undefined;
       }}>
       {post.markdown}
     </Markdown>,
@@ -53,10 +53,15 @@ export const meta: Route.MetaFunction = createMetaDescriptors(
   ({ data: post, location: { pathname } }) => ({
     title: post.title,
     description: post.description,
-    image: URL.parse(
+    image: URL.canParse(
       "opengraph.png",
       `x:${pathname}${pathname.endsWith("/") ? "" : "/"}`,
-    )?.pathname,
+    )
+      ? new URL(
+          "opengraph.png",
+          `x:${pathname}${pathname.endsWith("/") ? "" : "/"}`,
+        ).pathname
+      : undefined,
   }),
 );
 
@@ -105,10 +110,15 @@ export default function Post({ loaderData: post }: Route.ComponentProps) {
             </h1>
             <img
               src={
-                URL.parse(
+                URL.canParse(
                   post.image.src,
                   `x:/optimized/960/540/posts/${post.name}/`,
-                )?.pathname
+                )
+                  ? new URL(
+                      post.image.src,
+                      `x:/optimized/960/540/posts/${post.name}/`,
+                    ).pathname
+                  : undefined
               }
               alt={post.image.alt}
               style={{

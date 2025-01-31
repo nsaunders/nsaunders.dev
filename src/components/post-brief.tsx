@@ -35,24 +35,29 @@ export function PostBrief(
           alt={props.image.alt}
           style={pipe(
             {
-              backgroundImage: `url(${
-                URL.parse(
-                  props.image.src,
-                  `x:/optimized/640/360/posts/${props.name}/`,
-                )?.pathname
-              })`,
+              backgroundImage: URL.canParse(
+                props.image.src,
+                `x:/optimized/640/360/posts/${props.name}/`,
+              )
+                ? `url(${new URL(props.image.src, `x:/optimized/640/360/posts/${props.name}/`).pathname})`
+                : undefined,
               backgroundSize: "cover",
               width: "100%",
               aspectRatio: 16 / 9,
               marginBlock: 8,
             },
             on("@container (min-width: 640px)", {
-              backgroundImage: `url(${
-                URL.parse(
-                  props.image.src,
-                  `x:/optimized/160/160/posts/${props.name}/`,
-                )?.pathname
-              })`,
+              backgroundImage: URL.canParse(
+                props.image.src,
+                `x:/optimized/160/160/posts/${props.name}/`,
+              )
+                ? `url(${
+                    new URL(
+                      props.image.src,
+                      `x:/optimized/160/160/posts/${props.name}/`,
+                    ).pathname
+                  })`
+                : undefined,
               aspectRatio: 1,
               gridRow: "span 3",
               marginBlock: 0,

@@ -15,7 +15,9 @@ export async function loader() {
   const { prelude: stream } = await prerenderToNodeStream(
     <Markdown
       urlTransform={url => {
-        return URL.parse(url, `x:/about/`)?.toString().replace(/^x:/, "");
+        return URL.canParse(url, `x:/about/`)
+          ? new URL(url, `x:/about/`).toString().replace(/^x:/, "")
+          : url;
       }}>
       {page.markdown}
     </Markdown>,

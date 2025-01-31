@@ -83,12 +83,15 @@ export const getPostResourceURL = (name: string, pathname: string) => {
   const baseURL = /\.(gif|jpe?g|png|webp)$/.test(pathname)
     ? "https://media.githubusercontent.com/media"
     : "https://raw.githubusercontent.com";
-  return (
-    URL.parse(
-      pathname,
-      `${baseURL}/nsaunders/writing/refs/heads/master/posts/${name}/`,
-    )?.toString() || ""
-  );
+  return URL.canParse(
+    pathname,
+    `${baseURL}/nsaunders/writing/refs/heads/master/posts/${name}/`,
+  )
+    ? new URL(
+        pathname,
+        `${baseURL}/nsaunders/writing/refs/heads/master/posts/${name}/`,
+      ).toString()
+    : undefined;
 };
 
 export function listPostAssetsByName(name: string) {
