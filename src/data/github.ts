@@ -1,4 +1,6 @@
-export const githubRequestInit = (config?: RequestInit) => ({
+export const githubRequestInit = (config?: {
+  headers?: Record<string, unknown>;
+}) => ({
   ...config,
   headers: {
     ...config?.headers,

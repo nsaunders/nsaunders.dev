@@ -7,7 +7,11 @@ import { gray } from "../design/colors.ts";
 
 export const { Vr } = component(
   "Vr",
-  ({ style, ...restProps }: ComponentPropsWithoutRef<"hr">) =>
+  ({
+    children: _children,
+    style,
+    ...restProps
+  }: ComponentPropsWithoutRef<"hr">) =>
     hr({
       style: pipe(
         {
