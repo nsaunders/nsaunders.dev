@@ -91,7 +91,7 @@ export const getPostResourceURL = (name: string, pathname: string) => {
         pathname,
         `${baseURL}/nsaunders/writing/refs/heads/master/posts/${name}/`,
       ).toString()
-    : undefined;
+    : pathname;
 };
 
 export function listPostAssetsByName(name: string) {

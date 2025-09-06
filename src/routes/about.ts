@@ -1,8 +1,9 @@
 import { prerenderToNodeStream } from "react-dom/static";
 import { pipe } from "remeda";
+import { div, h1, header, hgroup, img, main$ } from "renuel";
 
-import { Block } from "../components/block.tsx";
-import { Markdown } from "../components/markdown.tsx";
+import { Block$ } from "../components/block.ts";
+import { Markdown } from "../components/markdown.ts";
 import { darkMode, on } from "../css.ts";
 import { createMetaDescriptors } from "../data/meta.ts";
 import { getPageByName } from "../data/page.ts";
@@ -13,14 +14,16 @@ export async function loader() {
   const page = await getPageByName("about");
 
   const { prelude: stream } = await prerenderToNodeStream(
-    <Markdown
-      urlTransform={url => {
-        return URL.canParse(url, `x:/about/`)
-          ? new URL(url, `x:/about/`).toString().replace(/^x:/, "")
-          : url;
-      }}>
-      {page.markdown}
-    </Markdown>,
+    Markdown(
+      {
+        urlTransform: url => {
+          return URL.canParse(url, `x:/about/`)
+            ? new URL(url, `x:/about/`).toString().replace(/^x:/, "")
+            : url;
+        },
+      },
+      page.markdown,
+    ),
   );
 
   const html = await new Promise<string>((resolve, reject) => {
@@ -40,10 +43,10 @@ export const meta: Route.MetaFunction = createMetaDescriptors({
 });
 
 export default function About({ loaderData: { html } }: Route.ComponentProps) {
-  return (
-    <main>
-      <header
-        style={pipe(
+  return main$(
+    header(
+      {
+        style: pipe(
           {
             backgroundColor: gray(15),
             paddingBlock: 64,
@@ -51,16 +54,20 @@ export default function About({ loaderData: { html } }: Route.ComponentProps) {
           on(darkMode, {
             backgroundColor: gray(85),
           }),
-        )}>
-        <Block>
-          <hgroup
-            style={{
+        ),
+      },
+      Block$(
+        hgroup(
+          {
+            style: {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-            }}>
-            <h1
-              style={pipe(
+            },
+          },
+          h1(
+            {
+              style: pipe(
                 {
                   margin: 0,
                   fontSize: 40,
@@ -71,27 +78,27 @@ export default function About({ loaderData: { html } }: Route.ComponentProps) {
                 on(darkMode, {
                   color: blue(20),
                 }),
-              )}>
-              About
-            </h1>
-            <img
-              src="https://github.com/nsaunders.png"
-              alt="Nick Saunders"
-              style={{
-                width: 128,
-                height: 128,
-                borderRadius: 999,
-              }}
-            />
-          </hgroup>
-        </Block>
-      </header>
-      <Block>
-        <div
-          style={{ marginBlock: 32 }}
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
-      </Block>
-    </main>
+              ),
+            },
+            "About",
+          ),
+          img({
+            src: "https://github.com/nsaunders.png",
+            alt: "Nick Saunders",
+            style: {
+              width: 128,
+              height: 128,
+              borderRadius: 999,
+            },
+          }),
+        ),
+      ),
+    ),
+    Block$(
+      div({
+        style: { marginBlock: 32 },
+        dangerouslySetInnerHTML: { __html: html },
+      }),
+    ),
   );
 }

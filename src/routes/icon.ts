@@ -1,8 +1,9 @@
 import puppeteer from "puppeteer";
 import { renderToString } from "react-dom/server";
+import { body } from "renuel";
 import * as v from "valibot";
 
-import { Logo } from "../components/logo.tsx";
+import { Logo } from "../components/logo.ts";
 import { black, white } from "../design/colors.ts";
 import type { Route } from "./+types/icon.ts";
 
@@ -36,17 +37,19 @@ export async function loader({ params }: Route.LoaderArgs) {
   await page.setContent(
     "<!DOCTYPE html>" +
       renderToString(
-        <body
-          style={{
-            margin: 0,
-            height: "100dvh",
-            background: black,
-            color: white,
-            display: "grid",
-            placeItems: "center",
-          }}>
-          <Logo size={size} />
-        </body>,
+        body(
+          {
+            style: {
+              margin: 0,
+              height: "100dvh",
+              background: black,
+              color: white,
+              display: "grid",
+              placeItems: "center",
+            },
+          },
+          Logo({ size }),
+        ),
       ),
   );
 

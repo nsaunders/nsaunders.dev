@@ -1,13 +1,15 @@
 import type { ComponentPropsWithoutRef } from "react";
 import { pipe } from "remeda";
+import { component, hr } from "renuel";
 
 import { darkMode, merge, on } from "../css.ts";
 import { gray } from "../design/colors.ts";
 
-export function Vr({ style, ...restProps }: ComponentPropsWithoutRef<"hr">) {
-  return (
-    <hr
-      style={pipe(
+export const { Vr } = component(
+  "Vr",
+  ({ style, ...restProps }: ComponentPropsWithoutRef<"hr">) =>
+    hr({
+      style: pipe(
         {
           width: 1,
           height: "100%",
@@ -19,8 +21,7 @@ export function Vr({ style, ...restProps }: ComponentPropsWithoutRef<"hr">) {
           backgroundColor: gray(80),
         }),
         merge(style),
-      )}
-      {...restProps}
-    />
-  );
-}
+      ),
+      ...restProps,
+    }),
+);

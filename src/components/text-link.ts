@@ -1,22 +1,15 @@
-import type {
-  ComponentPropsWithoutRef,
-  CSSProperties,
-  ElementType,
-} from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { pipe } from "remeda";
+import { component } from "renuel";
 
-import { and, darkMode, hover, merge, on } from "../css.ts";
+import { and, darkMode, hover, on } from "../css.ts";
 import { blue, gray, red } from "../design/colors.ts";
 
-export function TextLink<As extends ElementType = "a">({
-  as,
-  style,
-  ...restProps
-}: { as?: As } & Omit<ComponentPropsWithoutRef<As>, "as">) {
-  const Component: ElementType<{ style: CSSProperties }> = as || "a";
-  return (
-    <Component
-      style={pipe(
+export const { TextLink, TextLink$ } = component(
+  "TextLink",
+  ({ children }: { children: (_: { style: CSSProperties }) => ReactNode }) =>
+    children({
+      style: pipe(
         {
           color: blue(70),
           textDecorationThickness: 1,
@@ -45,9 +38,6 @@ export function TextLink<As extends ElementType = "a">({
         on("&:focus-visible", {
           outlineWidth: 2,
         }),
-        merge(style),
-      )}
-      {...restProps}
-    />
-  );
-}
+      ),
+    }),
+);
