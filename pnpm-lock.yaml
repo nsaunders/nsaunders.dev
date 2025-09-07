@@ -105,8 +105,8 @@ importers:
         specifier: ^2.18.0
         version: 2.18.0
       renuel:
-        specifier: 0.0.2-next.5
-        version: 0.0.2-next.5(react@19.0.0)
+        specifier: 0.0.2-next.11
+        version: 0.0.2-next.11(react@19.0.0)
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
@@ -2534,8 +2534,8 @@ packages:
   remeda@2.18.0:
     resolution: {integrity: sha512-wvHvaApA7crz46HWhGTotPawkzd45w1iXzPK7r4ECQgbmcSqHLrVio2LOr7ZEp1pu5QDH1U391ZKu+qra7OoLw==}
 
-  renuel@0.0.2-next.5:
-    resolution: {integrity: sha512-9+4Ub5K0MJFikoWAeyjeugxvtSMAO01Ut1wiMhk1pI40Zp1S5Y8R/ZcZtnIZ+7lFnyC5Wt0O6LEUPdZYuXXphw==}
+  renuel@0.0.2-next.11:
+    resolution: {integrity: sha512-+uQ4zeSblDGgcU/EvvguHM7Fstic4H5EWEg7pqJ6VYiGsD9BNe/T9M35DGbhrYZLVj74cPWvX9mSeHm6glkh8Q==}
     engines: {node: '>=23.6.0', npm: '>=10.9.2'}
     peerDependencies:
       react: '>=16.8'
@@ -5957,7 +5957,7 @@ snapshots:
     dependencies:
       type-fest: 4.30.2
 
-  renuel@0.0.2-next.5(react@19.0.0):
+  renuel@0.0.2-next.11(react@19.0.0):
     dependencies:
       react: 19.0.0
 
