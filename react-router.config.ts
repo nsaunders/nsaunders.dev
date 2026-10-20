@@ -7,6 +7,8 @@ Env.parse(process.env);
 
 export default {
   ssr: true,
+  // Pages serves prerendered files, not the /__manifest endpoint.
+  routeDiscovery: { mode: "initial" },
   appDirectory: "src",
   prerender: async ({ getStaticPaths }) => [
     ...getStaticPaths(),
