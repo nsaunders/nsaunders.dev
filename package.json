@@ -8,7 +8,7 @@
     "dev": "APP_URL=http://localhost:5173 react-router dev",
     "fix": "eslint --fix . && prettier --write .",
     "lint": "eslint . && prettier --check .",
-    "typecheck": "tsc --build --noEmit"
+    "typecheck": "NODE_ENV=development APP_URL=${APP_URL:-http://localhost:5173} react-router typegen && tsc --build --noEmit"
   },
   "dependencies": {
     "@css-hooks/react": "4.0.0-next.70",
