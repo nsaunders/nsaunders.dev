@@ -11,7 +11,6 @@ export const Schema = v.object({
       "URL should not end with a '/'.",
     ),
   ),
-  GITHUB_ACCESS_TOKEN: v.pipe(v.string(), v.nonEmpty()),
 });
 
 export const parse = (env: unknown) => v.parse(Schema, env);

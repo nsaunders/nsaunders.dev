@@ -25,5 +25,6 @@ export const blue = color(0.18, 260);
 export const green = color(0.16, 160);
 export const yellow = color(0.16, 90);
 export const red = color(0.16, 25);
+export const pink = color(0.16, 330);
 export const black = "oklch(9.5% 0.01 260)";
 export const white = "oklch(100% 0.01 260)";

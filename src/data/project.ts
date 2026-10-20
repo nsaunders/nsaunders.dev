@@ -1,10 +1,7 @@
 import * as cheerio from "cheerio";
 import * as v from "valibot";
 
-import { githubRequestInit } from "./github.ts";
-
 const username = "nsaunders";
-
 const ProjectSchema = v.object({
   url: v.string(),
   owner: v.string(),
@@ -16,10 +13,7 @@ const ProjectSchema = v.object({
 });
 
 export async function listProjects() {
-  const res = await fetch(
-    `https://github.com/${username}`,
-    githubRequestInit(),
-  );
+  const res = await fetch(`https://github.com/${username}`);
   const $ = cheerio.load(await res.text());
   return $(".pinned-item-list-item-content")
     .map(function () {
@@ -53,57 +47,10 @@ export async function listProjects() {
     .toArray();
 }
 
-export async function getFeaturedProject() {
-  const projects = await listProjects();
-  const stories = await listStories();
-  const project = projects.find(p =>
-    stories.some(s => p.owner === s.owner && p.name === s.name),
-  );
-  if (project) {
-    const res = await fetch(
-      `https://raw.githubusercontent.com/nsaunders/writing/master/projects/${project.owner}/${project.name}.md`,
-      githubRequestInit(),
-    );
-    if (!res.ok) {
-      throw new Error(
-        `An error occurred while fetching the story for ${project.owner}/${project.name}: ${res.statusText}`,
-      );
-    }
-    const story = await res.text();
-    return { ...project, story };
-  }
-  return null;
-}
-
-async function listStories() {
-  const res = await fetch(
-    `https://api.github.com/repos/${username}/writing/git/trees/master?recursive=true`,
-    githubRequestInit(),
-  );
-  const json = await res.json();
-
-  const { tree } = v.parse(
-    v.object({ tree: v.array(v.object({ path: v.string() })) }),
-    json,
-  );
-
-  return v.parse(
-    v.array(v.object({ name: v.string(), owner: v.string() })),
-    tree
-      .map(({ path }) => (path.match(/^projects\/(.+)\.md$/) || [])[1])
-      .filter(Boolean)
-      .map(x => {
-        const [owner, name] = x.split("/");
-        return { owner, name };
-      }),
-  );
-}
-
 export async function getProjectStatsByOwnerAndName(
   owner: string,
   name: string,
 ) {
-  // Note: Do not use `githubRequestInit()` as this request happens on the client.
   const res = await fetch(`https://api.github.com/repos/${owner}/${name}`);
   if (!res.ok) {
     throw new Error(

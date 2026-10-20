@@ -1,5 +1,6 @@
-import { createHooks } from "@css-hooks/react";
-import type { CSSProperties } from "react";
+import { createHooks, mergeStyles } from "@css-hooks/react";
+
+export { mergeStyles };
 
 export const { styleSheet, on, and, or, not } = createHooks(
   "@container (width >= 400px)",
@@ -15,22 +16,15 @@ export const { styleSheet, on, and, or, not } = createHooks(
   ".group:hover &",
   ":hover ~ &",
   ":active ~ &",
+  ".markdown > &:first-child",
+  ".markdown > &:last-child",
+  ".markdown blockquote > &:last-child",
+  ".markdown li > &",
+  ".markdown li + &",
+  ".markdown p + &",
+  ".markdown h2 + &",
+  ".markdown h3 + &",
 );
-
-export function merge(b: CSSProperties | undefined) {
-  return (a: CSSProperties) => {
-    if (!b) {
-      return a;
-    }
-    const style = JSON.parse(JSON.stringify(a)) as CSSProperties;
-    for (const key in b) {
-      const property = key as keyof CSSProperties;
-      delete style[property];
-      Object.assign(style, { [property]: b[property] });
-    }
-    return style;
-  };
-}
 
 export const darkMode = or(
   and("@media (prefers-color-scheme: dark)", '[data-theme="auto"] &'),

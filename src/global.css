@@ -1,6 +1,4 @@
-@import "@fontsource/montserrat/600.css";
-@import "@fontsource-variable/nunito-sans/index.css";
-@import "@fontsource-variable/inconsolata/index.css";
+@import "@shikijs/twoslash/style-rich.css";
 
 .shiki,
 .shiki * {
@@ -56,6 +54,108 @@
   font-style: var(--shiki-font-style);
   font-weight: var(--shiki-font-weight);
   text-decoration: var(--shiki-text-decoration);
+}
+
+.shiki > code {
+  background: transparent !important;
+}
+
+.twoslash {
+  --twoslash-code-font-size: 1rem;
+  --twoslash-popup-bg: var(--shiki-light-bg);
+}
+
+.twoslash > code {
+  display: block;
+}
+
+.twoslash .twoslash-error-line {
+  min-width: 0;
+  width: auto;
+  white-space: pre-wrap;
+}
+
+.twoslash .twoslash-popup-container {
+  display: none;
+  max-width: 320px;
+  transform: translateY(18px);
+  white-space: normal;
+}
+
+.twoslash .twoslash-query-persisted .twoslash-popup-container {
+  transform: translateY(24px);
+}
+
+.twoslash .twoslash-popup-arrow {
+  left: 16px;
+}
+
+.twoslash .twoslash-popup-docs,
+.twoslash .twoslash-popup-error {
+  font-size: 0.8rem;
+}
+
+.twoslash .twoslash-popup-docs-tags,
+.twoslash .twoslash-popup-docs-tag-name {
+  margin-right: 8px;
+}
+
+.twoslash .twoslash-query-line .twoslash-popup-container {
+  margin-bottom: 22px;
+  transform: translateY(10px);
+}
+
+.twoslash .twoslash-error-line,
+.twoslash .twoslash-tag-line {
+  margin: 3px 0;
+}
+
+.twoslash .twoslash-completion-cursor .twoslash-completion-list {
+  transform: translate(0, 19px);
+}
+
+.twoslash-completion-list li {
+  gap: 4px;
+  line-height: 1rem;
+}
+
+.twoslash-completion-list::before {
+  height: 22px;
+  top: -26px;
+}
+
+.twoslash-completion-list .twoslash-completions-icon {
+  width: 16px;
+}
+
+.twoslash .twoslash-tag-line {
+  gap: 5px;
+}
+
+.twoslash .twoslash-tag-line .twoslash-tag-icon {
+  width: 18px;
+}
+
+.twoslash .twoslash-hover:hover .twoslash-popup-container,
+.twoslash .twoslash-error-hover:hover .twoslash-popup-container,
+.twoslash .twoslash-query-persisted .twoslash-popup-container,
+.twoslash .twoslash-query-line .twoslash-popup-container {
+  display: inline-flex;
+}
+
+.twoslash .twoslash-popup-code {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"] .twoslash {
+    --twoslash-popup-bg: var(--shiki-dark-bg);
+  }
+}
+
+[data-theme="dark"] .twoslash {
+  --twoslash-popup-bg: var(--shiki-dark-bg);
 }
 
 .shiki code {

@@ -1,4 +1,4 @@
-import type { MetaDescriptors } from "react-router/route-module";
+import type { MetaDescriptor } from "react-router";
 
 const url = (pathname: string) =>
   URL.canParse(pathname, process.env.APP_URL)
@@ -14,9 +14,8 @@ type CreateMetaDescriptorArgs = {
 export const createMetaDescriptors =
   <Args extends { location: { pathname: string } }>(
     argsIn:
-      | CreateMetaDescriptorArgs
-      | ((args: Args) => CreateMetaDescriptorArgs),
-  ): ((args: Args) => MetaDescriptors) =>
+      CreateMetaDescriptorArgs | ((args: Args) => CreateMetaDescriptorArgs),
+  ): ((args: Args) => MetaDescriptor[]) =>
   (args: Args) => {
     const defaultImage = "/icons/1200/630/icon.png";
     const {
@@ -26,7 +25,7 @@ export const createMetaDescriptors =
       title,
       description,
       image,
-    }: CreateMetaDescriptorArgs): MetaDescriptors => [
+    }: CreateMetaDescriptorArgs): MetaDescriptor[] => [
       { title: `${title} — nsaunders.dev` },
       { property: "og:title", content: title },
       { property: "og:image", content: url(image || defaultImage) },

@@ -1,9 +1,10 @@
+import { readFile } from "node:fs/promises";
+
 import sharp from "sharp";
-import { Readable } from "stream";
-import { ReadableStream } from "stream/web";
 import * as v from "valibot";
 
 import * as Mime from "../data/mime.ts";
+import { getPostResourcePath } from "../data/post.ts";
 import * as Str from "../data/string.ts";
 import type { Route } from "./+types/optimized.ts";
 
@@ -43,23 +44,18 @@ export async function loader({ params }: Route.LoaderArgs) {
     throw new Response(null, { status: 404 });
   }
 
-  const upstream = await fetch(
-    `https://media.githubusercontent.com/media/nsaunders/writing/refs/heads/master/${pathname}`,
-  );
-
-  if (!upstream.ok || !upstream.body) {
-    throw new Response(null, { status: 500 });
+  const [, name, ...resourceParts] = pathname.split("/");
+  if (!name || resourceParts.length === 0) {
+    throw new Response(null, { status: 404 });
   }
-
-  const resizer = sharp()
+  const image = await sharp(
+    await readFile(getPostResourcePath(name, resourceParts.join("/"))),
+  )
     .resize({ width, height, fit: "cover" })
-    [Str.removePrefix(mime, "image/")]();
+    [Str.removePrefix(mime, "image/")]()
+    .toBuffer();
 
-  Readable.fromWeb(
-    upstream.body as Parameters<typeof Readable.fromWeb>[0],
-  ).pipe(resizer);
-
-  return new Response(ReadableStream.from(resizer), {
+  return new Response(new Uint8Array(image), {
     status: 200,
     headers: {
       "Content-Type": mime,

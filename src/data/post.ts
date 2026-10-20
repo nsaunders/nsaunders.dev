@@ -1,23 +1,15 @@
+import { readdir, readFile } from "node:fs/promises";
+import path from "node:path";
+
 import matter from "gray-matter";
 import * as v from "valibot";
 
-import { githubRequestInit } from "./github.ts";
+const postsDirectory = path.resolve("src/content/posts");
 
 export async function listPosts() {
-  const res = await fetch(
-    "https://api.github.com/repos/nsaunders/writing/contents/posts",
-    githubRequestInit(),
-  );
-  if (!res.ok) {
-    throw new Error("An error occurred while fetching the list of posts.");
-  }
-  return v.parse(
-    v.pipe(
-      v.array(v.object({ name: v.string() })),
-      v.transform(posts => posts.filter(({ name }) => !name.includes("."))),
-    ),
-    await res.json(),
-  );
+  return (await readdir(postsDirectory, { withFileTypes: true }))
+    .filter(entry => entry.isDirectory())
+    .map(({ name }) => ({ name }));
 }
 
 export async function listPostsWithDetails() {
@@ -37,21 +29,19 @@ export async function listPostsWithDetails() {
 }
 
 export async function getPostByName(name: string) {
-  const res = await fetch(
-    `https://raw.githubusercontent.com/nsaunders/writing/master/posts/${name}/index.md`,
-    githubRequestInit(),
-  );
-  if (!res.ok) {
-    throw new Error(`Request for post "${name}" failed: ${res.statusText}`);
+  if (!/^[a-z0-9-]+$/.test(name)) {
+    throw new Response(null, { status: 404 });
   }
-  const { content: markdown, data } = matter(await res.text());
+  const { content: markdown, data } = matter(
+    await readFile(path.join(postsDirectory, name, "index.mdx"), "utf8"),
+  );
   return {
     name,
     markdown,
     discussionHref: `https://x.com/search?q=${encodeURIComponent(
       `https://nsaunders.dev/posts/${name}`,
     )}`,
-    editHref: `https://github.com/nsaunders/writing/edit/master/posts/${name}/index.md`,
+    editHref: `https://github.com/nsaunders/nsaunders.dev/edit/${process.env.APP_URL === "https://next.nsaunders.dev" ? "next" : "latest"}/src/content/posts/${name}/index.mdx`,
     ...v.parse(
       v.pipe(
         v.object({
@@ -79,42 +69,33 @@ export async function getPostByName(name: string) {
 export const getLatestPost = () =>
   listPostsWithDetails().then(([latest]) => latest || null);
 
-export const getPostResourceURL = (name: string, pathname: string) => {
-  const baseURL = /\.(gif|jpe?g|png|webp)$/.test(pathname)
-    ? "https://media.githubusercontent.com/media"
-    : "https://raw.githubusercontent.com";
-  return URL.canParse(
-    pathname,
-    `${baseURL}/nsaunders/writing/refs/heads/master/posts/${name}/`,
-  )
-    ? new URL(
-        pathname,
-        `${baseURL}/nsaunders/writing/refs/heads/master/posts/${name}/`,
-      ).toString()
-    : pathname;
-};
+export function getPostResourcePath(name: string, pathname: string) {
+  if (!/^[a-z0-9-]+$/.test(name)) {
+    throw new Response(null, { status: 404 });
+  }
+  const directory = path.join(postsDirectory, name);
+  const resourcePath = path.resolve(directory, pathname);
+  if (!resourcePath.startsWith(`${directory}${path.sep}`)) {
+    throw new Response(null, { status: 404 });
+  }
+  return resourcePath;
+}
 
-export function listPostAssetsByName(name: string) {
-  return go(
-    `https://api.github.com/repos/nsaunders/writing/contents/posts/${name}/assets`,
-  );
-  async function go(url: string): Promise<string[]> {
-    const res = await fetch(url, githubRequestInit());
+export async function listPostAssetsByName(name: string) {
+  const directory = path.join(postsDirectory, name, "assets");
+  return walk(directory);
+
+  async function walk(currentDirectory: string): Promise<string[]> {
     return (
       await Promise.all(
-        v
-          .parse(
-            v.array(
-              v.object({ path: v.string(), url: v.pipe(v.string(), v.url()) }),
-            ),
-            await res.json(),
-          )
-          .map(async content => {
-            if (/\.[a-z0-9]+$/.test(content.path)) {
-              return [`/${content.path}`];
-            }
-            return await go(content.url);
-          }),
+        (await readdir(currentDirectory, { withFileTypes: true })).map(
+          entry => {
+            const entryPath = path.join(currentDirectory, entry.name);
+            return entry.isDirectory()
+              ? walk(entryPath)
+              : path.relative(path.join(postsDirectory, name), entryPath);
+          },
+        ),
       )
     ).flat();
   }

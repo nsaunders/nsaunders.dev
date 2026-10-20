@@ -1,13 +1,13 @@
 // @ts-check
 
 import eslint from "@eslint/js";
-// @ts-expect-error eslint-plugin-import does indeed have a default export
 import importPlugin from "eslint-plugin-import";
 import importSortPlugin from "eslint-plugin-simple-import-sort";
 import unusedImportPlugin from "eslint-plugin-unused-imports";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config(
+/** @type {ReturnType<typeof tseslint.config>} */
+const config = tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -77,3 +77,5 @@ export default tseslint.config(
     },
   },
 );
+
+export default config;

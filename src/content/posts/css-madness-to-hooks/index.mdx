@@ -1,0 +1,298 @@
+---
+title: From CSS madness to CSS Hooks
+description:
+  Why does styling a component involve so much machinery? A look at the
+  tradeoffs we've accepted in pursuit of a simpler developer experience. Is
+  there a better way?
+image_src: assets/images/cover.webp
+image_alt: A 19th-century inventor standing next to a Rube Goldberg machine
+published: 2023-10-17T12:00:00.000Z
+updated: 2026-10-14T12:00:00.000Z
+tags:
+  - CSS
+  - React
+---
+
+import { CssHooksDemo } from "./demos.tsx";
+
+A UI component brings behavior, markup, and styling together behind a single
+interface. These implementation details are tightly coupled. For example,
+changing the markup structure may require corresponding style changes. The
+component interface hides this complexity from the consumer, freeing them to
+think about the application in terms of component building blocks rather than
+low-level machinery.
+
+As a component author, I want a styling approach that aligns with that model:
+
+- It should not leak. Generating bespoke CSS rulesets can introduce loading and
+  ordering concerns outside the component itself, complicating code splitting
+  and server rendering. Styling should not require application-level
+  coordination.
+- I should be able to style an element directly with no forced naming, module
+  separation, or other required conventions.
+- Style resolution should be deterministic. When I compose styles, their
+  priority should follow the order I write them, without requiring me to reason
+  about specificity, stylesheet order, or cascade layers.
+- I should be able to source a value from a prop, design token, computation,
+  constant, or any other JavaScript expression without bumping into compiler
+  constraints.
+- Properties and values should be type-checked using ordinary TypeScript
+  tooling.
+
+Despite some well-known limitations, React's `style` prop mostly delivers.
+
+The `style` prop renders as an inline style in the HTML `style` attribute.
+Inline style declarations apply predictably to a single element with no
+possibility of interference from selector specificity, stylesheet ordering, or
+cascade layer issues.
+
+Unfortunately, inline styles stop just short of general usefulness. They can
+express CSS values, but not the conditions under which those values should
+apply. For example, an inline style can't respond to `:hover`, a container
+query, or the state of a parent element.
+
+An endless stream of alternative styling systems has emerged to fill these gaps
+while promising the convenience of inline styles. Somehow, each one seems more
+exciting than the last. In reality, they fall into a few broad categories, each
+with its own tradeoffs and all exposed to the cascade. I call this cycle _CSS
+madness_.
+
+## Popular workarounds
+
+### Runtime CSS-in-JS
+
+Libraries like [Styled Components](https://styled-components.com/) and
+[Emotion](https://emotion.sh/) support the entire CSS language, including its
+full range of selectors and responsive queries. Arbitrary JavaScript expressions
+can be used for dynamic values, making styles convenient to author alongside
+component markup. So what's the catch?
+
+These libraries depend on the brute force of runtime style injection. As the
+user traverses the application, the stylesheets required to present each view
+are generated and added to the document. This is heavy, but it works well enough
+in a single-page application. In the context of server rendering or React Server
+Components, however, the complexity can't be ignored.
+
+Server rendering requires the library to collect generated styles and include
+them with the HTML. With streaming, those styles must arrive alongside the
+content that needs them. During hydration, the browser-side runtime must
+recognize the server-generated rules and produce matching class names. All of
+this requires coordination between the styling library and the rendering
+framework.
+
+React Server Components introduce another constraint. Using runtime CSS-in-JS
+can force a client boundary even when the component has no interactive behavior.
+
+### Utility classes
+
+Frameworks like [Tailwind CSS](https://tailwindcss.com/) encode proprietary
+styling syntax in class names. Each class name maps to a single-purpose CSS
+ruleset or _utility_, and multiple utilities can be added to the same element to
+produce a complete style. The authoring model is essentially inline styles; but,
+because utilities live in a stylesheet, they have access to CSS features like
+selectors and at-rules. Is it truly the best of both worlds?
+
+The language of utility classes requires its own investment in learning, without
+replacing the need to understand CSS. Authors have to know both the underlying
+styling rules and the framework-specific syntax used to express them. Coding
+agents pay the same translation tax when mapping their intended CSS declarations
+back to the corresponding utility classes.
+
+Utility-class frameworks build constraints into their default vocabulary of
+colors, typography, and spacing. Those constraints are marketed as a feature
+rather than a limitation. On the happy path, they can certainly feel that way.
+In practice, getting a design right often requires a 1-pixel bump or a subtle
+color adjustment. Those “helpful constraints” then become friction. Good
+primitives are flexible, allowing constraints to be layered on top.
+
+Recognizing the constraint tax, Tailwind CSS introduced an escape hatch called
+“arbitrary values,” allowing classes such as `p-[17px]` to express values
+outside its presets. Arbitrary values help, but they are not the same as dynamic
+values. Tailwind scans source files as plain text without parsing the code. That
+means class names must appear in literal form. For example, a dynamic length
+value can't simply be interpolated into a class name.
+
+Utility classes apply to an element through the `className` prop. To the
+TypeScript compiler, `className` is just a string, whether the embedded utility
+class syntax is valid or not. Specialized lint rules and editor extensions can
+catch some mistakes, but they add another layer of tooling to configure and
+maintain.
+
+Finally, utility class architecture doesn't produce natural code-splitting
+boundaries. Most applications just ship a monolithic stylesheet containing all
+of the CSS rulesets used throughout the entire application, whether they
+represent active UI or screens the user might never even visit. Splitting that
+stylesheet is possible, but it requires explicit build configuration rather than
+following component boundaries automatically.
+
+### “Zero-runtime” CSS-in-JS
+
+“Zero-runtime” CSS-in-JS systems like [StyleX](https://stylexjs.com/),
+[Panda CSS](https://panda-css.com/), and
+[Vanilla Extract](https://vanilla-extract.style/) return to TypeScript
+authoring, generating stylesheets at build time rather than during application
+execution. How much does that optimization cost?
+
+Writing styles in TypeScript doesn't mean having the full expressive power of
+TypeScript. For example, StyleX and Panda CSS impose restrictions on control
+flow and use of helper functions within style definitions. Vanilla Extract
+requires style definitions to live in separate `.css.ts` modules rather than
+alongside component markup, breaking colocation. In the world of “zero-runtime”
+CSS-in-JS, valid TypeScript isn't necessarily valid input to the styling
+compiler.
+
+In addition, runtime values need special handling. A compiler can't know the
+width calculated during a drag interaction or a color returned by an API. These
+values must pass through a supported dynamic-style API, CSS custom properties,
+or inline styles rather than ordinary expressions in the style definition.
+
+## Destination: Inline styles
+
+Despite their differences, most styling approaches have been pursuing the same
+developer experience: inline styles with support for selectors and responsive
+queries.
+
+[Adam Wathan, creator of Tailwind CSS](https://x.com/adamwathan/status/1665117014157819904),
+described the idea this way:
+
+> It really just boils down to “being able to just style elements directly (like
+> you do in Swift, Winforms, Visual Basic et al) is good actually”. Add support
+> for media queries and pseudo classes to inline styles and it would be hard for
+> even me to justify using Tailwind anymore.
+
+[Naman Goel](https://x.com/naman34/status/2095593583604830576), a prominent
+member of the [StyleX core team](https://stylexjs.com/blog/introducing-stylex/),
+put it like this:
+
+> We all know inline styles is the final boss of styling and the DX and
+> expectations of inline styles is always the guiding principle for StyleX.
+
+### The case for inline styles
+
+- **Familiar, typed syntax.** Inline style objects use standard CSS properties
+  and values, checked by TypeScript. There's no utility-class vocabulary to
+  learn or styling compiler to satisfy. Basic editor feedback works without a
+  framework-specific extension.
+- **Local reasoning.** A style affects exactly one element. You do not need to
+  search for a selector, determine where else it matches, or wonder whether a
+  stale rule can be deleted. Component markup and styles are loaded, changed,
+  and removed together.
+- **Dynamic values.** A value can come directly from a prop, application state,
+  a JavaScript API (e.g. `ResizeObserver`), or a shared token. It does not need
+  to appear literally in source code so a build tool can discover it.
+- **Deterministic resolution.** Style composition follows JavaScript's object
+  semantics, with explicit precedence rather than complicated CSS semantics.
+  There are no selector specificity, stylesheet ordering, or cascade layer
+  priority issues to account for.
+- **No generation step.** Inline styles render as part of the element's markup.
+  There's no stylesheet to generate, extract, or inject—whether at build time or
+  runtime, whether the element renders on the server or in the browser.
+
+### Why not _just_ use inline styles?
+
+In 2021, [Jen Simmons](https://x.com/jensimmons/status/1392294998385778695), a
+CSS Working Group member and Apple WebKit developer advocate, questioned why
+developers should memorize Tailwind classes instead of CSS properties the
+browser already understands.
+
+Adam Wathan put it plainly in a
+[later discussion](https://x.com/adamwathan/status/1763008386260488680):
+
+> Honestly just hover states, focus states, media queries, etc. If inline styles
+> could do that, Tailwind wouldn't be worth the complexity.
+
+But what if inline styles _can_ do those things?
+
+## Introducing CSS Hooks
+
+CSS Hooks is not just another way to generate stylesheets. Instead, it _extends_
+native inline styles, adding CSS-powered conditions that make it possible to use
+selectors and responsive queries.
+
+```tsx
+import { mergeStyles, on } from "./css.ts";
+
+export function Button() {
+  return (
+    <button
+      type="button"
+      style={mergeStyles(
+        {
+          background: "#666",
+          border: 0,
+          borderRadius: 4,
+          color: "white",
+          cursor: "pointer",
+          font: "inherit",
+          padding: "12px 16px",
+        },
+        on("&:hover", {
+          background: "#009",
+        }),
+        on("&:active", {
+          background: "#900",
+          transform: "scale(0.98)",
+        }),
+      )}>
+      Save changes
+    </button>
+  );
+}
+```
+
+<CssHooksDemo />
+
+In this example, the `&:hover` and `&:active` conditions are real CSS selectors.
+The browser handles them entirely through CSS mechanisms—no component state or
+event listeners needed. `mergeStyles` and `on` are pure functions that only
+construct style objects. No style injection or other JavaScript-driven side
+effects are involved.
+
+These conditions, or _hooks_, can represent selectors (including
+pseudo-classes), responsive queries (including `@media` and `@container` rules),
+and more. Each hook creates a tiny piece of CSS plumbing code that you add to
+the document once, explicitly, and can then reuse throughout your app without
+generating additional rulesets.
+
+[Mark Dalgleish](https://x.com/markdalgleish/status/1729399475494608923),
+co-creator of CSS Modules and creator of Vanilla Extract, summarized CSS Hooks
+as type-safe inline styles—“literally the `style` attribute”—with support for
+pseudo-classes, selectors, and media and container queries.
+
+## The tradeoffs
+
+Most of a stylesheet defines which declarations apply under which conditions,
+using selectors and at-rules. CSS Hooks brings that functionality to inline
+styles, leaving behind a subset of CSS to be maintained in a static stylesheet:
+
+- `@keyframes` and `@font-face` rules
+- Global document rules
+- Pseudo-elements such as `::before` and `::after`
+- Markup you don't control
+
+Hooks must be declared upfront. That gives you control over the stylesheet: You
+add a small set of reusable hooks to the document yourself rather than injecting
+styles as your application runs. It also provides consistent, type-safe
+conditions with autocompletion.
+
+Inline styles are repetitive in the rendered markup, but that repetition
+compresses well. In
+[my comparison with StyleX](https://x.com/agilecoder/status/2095557329253253154),
+the inline-style version produced more verbose markup without increasing
+transferred bytes.
+
+Finally, CSS Hooks has a stricter
+[browser support baseline](https://css-hooks.com/docs/faq/#is-css-hooks-widely-supported-in-browsers)
+than ordinary inline styles.
+
+## Conclusion
+
+CSS madness has revealed how much developers value styling elements directly and
+the lengths to which we are willing to go to simulate that experience: adopting
+a complex styling runtime, learning a proprietary styling language, or being
+limited to a compiler-constrained subset of TypeScript.
+
+Inline styles represent the developer experience we've been chasing all along.
+CSS Hooks provides the selectors and responsive queries they were missing.
+
+To learn more, visit the [CSS Hooks documentation](https://css-hooks.com/docs/).
