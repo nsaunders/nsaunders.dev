@@ -1,0 +1,111 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - latest
+      - next
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      APP_URL:
+        ${{ (github.base_ref || github.ref_name) == 'next' &&
+        'https://next.nsaunders.dev' || 'https://nsaunders.dev' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: "npm"
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run typecheck
+
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+
+      - run: npm run build
+        env:
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: build/client
+          include-hidden-files: true
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    if: >-
+      github.event_name != 'pull_request' && (github.ref == 'refs/heads/latest'
+      || github.ref == 'refs/heads/next')
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: build/client
+
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          wranglerVersion: 4.124.0
+          apiToken: ${{ secrets.CF_TOKEN }}
+          accountId: ${{ vars.CF_ACCOUNT_ID }}
+          command: >-
+            pages deploy build/client --project-name=nsaunders --branch=${{
+            github.ref_name }}
+
+  pr:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/next'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Ensure next to latest pull request exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          open_prs=$(gh pr list --base latest --head next --state open --json number --jq 'length')
+          if [ "$open_prs" -gt 0 ]; then
+            echo "A next to latest pull request is already open."
+            exit 0
+          fi
+
+          ahead_by=$(gh api "repos/$GH_REPO/compare/latest...next" --jq '.ahead_by')
+          if [ "$ahead_by" -eq 0 ]; then
+            echo "No new commits to release."
+            exit 0
+          fi
+
+          gh pr create \
+            --base latest \
+            --head next \
+            --title "Release next to latest" \
+            --body 'This pull request tracks changes from `next` for the next production deployment. New pushes to `next` update it automatically.'
