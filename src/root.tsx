@@ -177,7 +177,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <html
       lang="en"
       data-theme="auto"
-      style={{ height: "100%" }}
+      style={{
+        height: "100%",
+        WebkitTextSizeAdjust: "100%",
+        textSizeAdjust: "100%",
+      }}
       suppressHydrationWarning>
       <head>
         <script

@@ -229,6 +229,8 @@ export function markdownComponents(basePath: string): MDXComponents {
               backgroundColor: gray(15),
               fontFamily: monospace,
               overflowX: "auto",
+              boxSizing: "border-box",
+              width: "100%",
               marginTop: 24,
               marginBottom: 24,
               marginLeft: 0,
