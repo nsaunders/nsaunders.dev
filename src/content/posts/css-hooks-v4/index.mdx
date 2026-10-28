@@ -1,0 +1,302 @@
+---
+title: Introducing CSS Hooks v4
+description:
+  You used to reach for React Context. Now you don't even need JavaScript. With
+  flags in CSS Hooks v4, an element can inherit, transform, and pass on styling
+  state entirely through CSS.
+image_src: assets/images/cover.webp
+image_alt:
+  Aligned doorways through rooms with alternating ivory and charcoal walls
+published: 2026-10-29T12:00:00.000Z
+tags:
+  - CSS
+  - React
+  - TypeScript
+---
+
+import { ColorCycleDemo, ThemeInversionDemo } from "./demos.tsx";
+
+How would you build a `Panel` component that automatically inverts its inherited
+theme at each level of nesting, producing dark within light and light within
+dark?
+
+```tsx
+<Panel>
+  <Panel>
+    <Panel />
+  </Panel>
+</Panel>
+```
+
+<ThemeInversionDemo />
+
+React Context could solve this: Each panel would read the context value, invert
+it, and wrap its descendants with a provider that propagates the new value. But
+this is just styling state—changing it shouldn't force every theme-aware
+descendant to re-render.
+
+[CSS Hooks](https://css-hooks.com/) v4 adds several new features, including
+built-in style composition, type-level property conflict protection,
+serializable conditional styles, nesting, and support for `@scope` hooks (more
+on these shortly). But I'm most excited about flags.
+
+## Introducing flags
+
+Flags are Boolean context values that propagate entirely through CSS and can be
+consumed just like selector and at-rule hooks.
+
+You declare them the same way as any other hook:
+
+```ts
+import { createHooks, mergeStyles } from "@css-hooks/react";
+
+export const { on, enable, disable } = createHooks("%dark");
+
+export { mergeStyles };
+```
+
+When you pass a flag hook, identified by a `%` prefix, to `createHooks`, it
+returns additional `enable` and `disable` functions.
+
+Flags are disabled by default. To enable `%dark` on an element and its
+descendants, use the `enable` function and pass the resulting style object to
+the element's `style` prop:
+
+```tsx
+<main style={enable("%dark")}>
+  <Article />
+  <Sidebar />
+</main>
+```
+
+An element can change its appearance based on the value:
+
+```ts
+const panelStyle = mergeStyles(
+  { background: "#fff", color: "#222" },
+  on("%dark", { background: "#333", color: "#fff" }),
+);
+```
+
+It can also provide a different value for itself and its descendants:
+
+```tsx
+<main style={enable("%dark")}>
+  <section style={disable("%dark")}>
+    <Article />
+  </section>
+</main>
+```
+
+Flags follow the element tree through CSS inheritance.
+
+### From inheritance to inversion
+
+An element can derive a new flag value from the one it inherits.
+
+For the theme example that opened this article, this is an inversion:
+
+```ts
+const invertDark = mergeStyles(
+  on(not("%dark"), enable("%dark")),
+  on("%dark", disable("%dark")),
+);
+```
+
+When you enable or disable a flag conditionally, the condition is evaluated
+against _inherited_ flag values in order to avoid circular logic. Therefore,
+enabling the flag in the first condition doesn't cause the second condition to
+match.
+
+For ordinary declarations, flag conditions are evaluated against the element's
+own values.
+
+Here's the complete `Panel` component:
+
+```tsx
+import type { ReactNode } from "react";
+
+import { disable, enable, mergeStyles, not, on } from "./css.ts";
+
+const invertDark = mergeStyles(
+  on(not("%dark"), enable("%dark")),
+  on("%dark", disable("%dark")),
+);
+
+export function Panel({ children }: { children?: ReactNode }) {
+  return (
+    <div
+      style={mergeStyles(
+        { background: "#fff", color: "#222" },
+        on("%dark", { background: "#333", color: "#fff" }),
+        invertDark,
+      )}>
+      <span>Panel</span>
+      {children}
+    </div>
+  );
+}
+```
+
+### Why stop at two states?
+
+Inversion alternates between two states. Multiple flags can work together to
+represent additional states.
+
+This makes it possible to cycle through a list of colors automatically at each
+level of nesting, for example:
+
+<ColorCycleDemo />
+
+To see how this works, have a look at the
+[full demo](https://stackblitz.com/fork/github/nsaunders/demos/tree/main/demos/css-hooks-cycle-flags).
+
+## Built-in style composition
+
+You may have noticed the new `mergeStyles` function in the preceding examples.
+It combines style objects, with each argument overriding matching properties
+from earlier arguments. It also enables compile-time property conflict
+protection.
+
+## Property conflict protection
+
+v4 provides compiler feedback that helps you avoid writing style objects that
+don't compose.
+
+For example, when you try to merge a base style object that includes a `margin`
+declaration with a conditional style object that includes a `marginTop`
+declaration, the compiler won't allow it because the `marginTop` fallback would
+unexpectedly overwrite the top margin set by the base style's `margin`
+shorthand:
+
+{/* prettier-ignore */}
+```ts twoslash
+// @errors: 2345
+import { createHooks, mergeStyles } from "@css-hooks/react";
+const { on } = createHooks("&:hover");
+// ---cut---
+mergeStyles(
+  { margin: 0 },
+  on("&:hover", { marginTop: 8 }),
+)
+```
+
+The checks cover shorthand/longhand conflicts, physical/logical overlaps such as
+`marginLeft` and `marginInlineStart`, and aliases such as `wordWrap` and
+`overflowWrap`.
+
+## Serializable conditional styles
+
+In v4, `on()` returns a plain, serializable style object.
+
+That means a conditional style is data you can pass across a React Server
+Component boundary:
+
+```tsx
+// page.tsx — server component
+
+import { on } from "./css.ts";
+import { SaveButton } from "./save-button.tsx";
+
+export default function Page() {
+  return <SaveButton style={on("&:hover", { background: "#009" })} />;
+}
+```
+
+```tsx
+// save-button.tsx — client component
+
+"use client";
+
+import type { CSSProperties } from "react";
+import { useState } from "react";
+
+import { mergeStyles } from "./css.ts";
+
+export function SaveButton({ style }: { style?: CSSProperties }) {
+  const [saved, setSaved] = useState(false);
+  return (
+    <button
+      type="button"
+      onClick={() => setSaved(true)}
+      style={mergeStyles({ background: "#666", color: "white" }, style)}>
+      {saved ? "Saved" : "Save changes"}
+    </button>
+  );
+}
+```
+
+Here, the server component passes the hover style to the client component's
+`style` prop. The client component then merges that object with its own style.
+
+## Nested conditions
+
+You can now nest calls to `on`:
+
+{/* prettier-ignore */}
+```ts
+on(
+  "@media (hover: hover)",
+  on("&:hover", {
+    background: "#009",
+  }),
+)
+```
+
+Nesting is equivalent to using the `and` function to combine conditions.
+
+You can also group styles and nested conditions with `mergeStyles`:
+
+{/* prettier-ignore */}
+```ts
+mergeStyles(
+  { background: "#eee", color: "#aaa" },
+  on(
+    "&:enabled",
+    mergeStyles(
+      { background: "#009", color: "#fff" },
+      on("&:hover", { background: "#006" }),
+    ),
+  ),
+)
+```
+
+## `@scope` support
+
+[`@scope`](https://developer.mozilla.org/en-US/docs/Web/CSS/@scope) hooks are
+now supported as well. You can use an `@scope` hook to apply a conditional style
+to an element only when it is positioned within a specific region of the
+document.
+
+For example, `@scope ([data-theme="dark"]) to ([data-theme])` matches when the
+nearest element with a `data-theme` attribute—either the element itself or an
+ancestor—has the value `"dark"`.
+
+## Other updates
+
+Framework integration compatibility changes:
+
+- **Preact:** Requires Preact v10.27.2 or later. Added support for Preact v11.
+- **Solid:** Updated to Solid v2, using `@solidjs/web` instead of `solid-js`.
+- **Qwik:** Updated to Qwik v2, using `@qwik.dev/core` instead of
+  `@builder.io/qwik`.
+
+v4 also features refreshed [documentation](https://next.css-hooks.com/docs/)
+including some useful [recipes](https://next.css-hooks.com/docs/recipes/).
+
+## Getting started
+
+New to CSS Hooks? Start with the
+[quickstart for your framework](https://next.css-hooks.com/docs/quickstart/). If
+you're upgrading from v3, follow the
+[v4 migration guide](https://next.css-hooks.com/docs/migration/v4/).
+
+## Conclusion
+
+Mark Dalgleish, an early advocate of CSS Hooks, once
+[likened it to a polyfill](https://x.com/markdalgleish/status/1732224401553432900).
+That minimalism remains a guiding principle for the design of CSS Hooks. But v4
+goes beyond simply "recovering CSS features missing from inline styles". Flags
+enable patterns that are otherwise genuinely difficult to implement without
+resorting to JavaScript. I can't wait to see what interesting designs emerge
+from this new primitive.
