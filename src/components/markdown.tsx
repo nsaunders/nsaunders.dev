@@ -189,7 +189,6 @@ export function markdownComponents(basePath: string): MDXComponents {
             {
               background: gray(15),
               borderColor: gray(30),
-              borderRadius: 8,
               borderStyle: "solid",
               borderWidth: 0,
               borderInlineStartWidth: 4,
