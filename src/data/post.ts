@@ -14,15 +14,9 @@ export async function listPosts() {
 
 export async function listPostsWithDetails() {
   const posts = await listPosts();
-  let postsWithDetails = await Promise.all(
+  const postsWithDetails = await Promise.all(
     posts.map(({ name }) => getPostByName(name)),
   );
-  if (process.env.NODE_ENV === "production") {
-    const now = new Date();
-    postsWithDetails = postsWithDetails.filter(
-      ({ published }) => published < now,
-    );
-  }
   return postsWithDetails.sort((a, b) =>
     a.published < b.published ? 1 : a.published > b.published ? -1 : 0,
   );
